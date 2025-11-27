@@ -5,6 +5,6 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
   css: ['~/assets/css/main.css'],
   nitro: {
-    preset: 'node'
+    preset: 'vercel'
   }
 })
