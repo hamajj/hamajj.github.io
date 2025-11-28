@@ -10,13 +10,13 @@
 
       <!-- Main Title -->
       <div v-else class="animate-slide-in-left">
-        <h1 class="text-6xl md:text-9xl font-black italic tracking-tighter text-white mb-2 glitch" data-text="MANKIND IS DEAD">
+        <h1 class="text-6xl md:text-8xl font-black italic tracking-tighter text-white mb-2 glitch" data-text="MANKIND IS DEAD">
           MANKIND IS DEAD
         </h1>
-        <h1 class="text-6xl md:text-9xl font-black italic tracking-tighter text-red-600 mb-2 glitch" data-text="BLOOD IS FUEL">
+        <h1 class="text-6xl md:text-8xl font-black italic tracking-tighter text-red-600 mb-2 glitch" data-text="BLOOD IS FUEL">
           BLOOD IS FUEL
         </h1>
-        <h1 class="text-6xl md:text-9xl font-black italic tracking-tighter text-white mb-12 glitch" data-text="HELL IS FULL">
+        <h1 class="text-6xl md:text-8xl font-black italic tracking-tighter text-white mb-12 glitch" data-text="HELL IS FULL">
           HELL IS FULL
         </h1>
 

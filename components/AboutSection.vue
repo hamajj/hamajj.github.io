@@ -8,13 +8,18 @@
       <div class="absolute -bottom-2 -right-2 w-8 h-8 border-b-4 border-r-4 border-red-600"></div>
 
       <div class="flex flex-col md:flex-row gap-8 items-center">
-        <!-- Profile Image Placeholder / Avatar -->
+        <!-- Profile Image / Avatar -->
         <div class="w-48 h-48 border-4 border-white bg-gray-900 flex items-center justify-center overflow-hidden relative group">
-           <!-- Glitch overlay on hover could go here -->
            <div class="absolute inset-0 bg-red-600/20 mix-blend-overlay"></div>
-           <span class="text-6xl text-gray-700 font-bold">?</span>
+           <img 
+             v-if="profileData?.profile?.avatar" 
+             :src="profileData.profile.avatar" 
+             alt="Avatar" 
+             class="w-full h-full object-cover"
+           />
+           <span v-else class="text-6xl text-gray-700 font-bold">?</span>
            <div class="absolute bottom-0 left-0 w-full bg-red-600 text-white text-xs text-center py-1">
-             UNKNOWN ENTITY
+             {{profileData?.profile?.login ?? 'UNKNOWN' }}
            </div>
         </div>
 
@@ -26,16 +31,16 @@
           
           <div class="font-mono text-lg md:text-xl text-gray-300 space-y-4">
             <p>
-              <span class="text-yellow-400">>></span> SUBJECT: Mehmet Hamza Akca
+              <span class="text-yellow-400">>></span> SUBJECT: {{ profileData?.profile?.name ?? profileData?.profile?.login ?? 'UNKNOWN' }}
             </p>
             <p>
-              <span class="text-yellow-400">>></span> CLASS: Full Stack Developer
+              <span class="text-yellow-400">>></span> CLASS: Hobbyist Web & Systems-Level Developer
             </p>
             <p>
-              <span class="text-yellow-400">>></span> MISSION: Construct high-performance digital infrastructure with aggressive efficiency.
+              <span class="text-yellow-400">>></span> MISSION: Design efficient structures from browser to bare metal.
             </p>
             <p class="mt-4 border-l-4 border-red-600 pl-4 italic opacity-80">
-              "I am a developer driven by style, speed and clarity. Inspired by the brutal energy of retro-FPS games, I build web experiences that leave a mark."
+              “Not a professional — just someone who loves to build.”
             </p>
           </div>
         </div>
@@ -58,10 +63,16 @@
 </template>
 
 <script setup>
+const { data: profileData, pending, error } = await useFetch('/api/profile')
+
 const skills = [
-  { name: 'VUE.JS', level: 95 },
-  { name: 'NUXT', level: 90 },
-  { name: 'TAILWIND', level: 100 },
-  { name: 'TYPESCRIPT', level: 85 },
+  { name: 'VUE.JS', level: 70 },
+  { name: 'NUXT', level: 70 },
+  { name: 'PYTHON', level: 100 },
+  { name: 'C++', level: 80 },
+  { name: 'C', level: 85 },
+  { name: 'JAVASCRIPT', level: 75 },
+  { name: 'TYPESCRIPT', level: 75 },
+  { name: 'BASH', level: 100 },
 ]
 </script>

@@ -10,7 +10,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <ProjectCard
-          v-for="(project, index) in projects"
+          v-for="(project, index) in visibleProjects"
           :key="index"
           :title="project.title"
           :desc="project.desc"
@@ -25,7 +25,30 @@
 </template>
 
 <script setup>
-const { data: projects, pending, error } = await useFetch('/api/repos')
+const { data: profileData, pending, error } = await useFetch('/api/profile')
 
-console.log(projects.value)
+const hiddenTitles = ["UC.SILAHSORLER.AHH", "TEMPORARY"]
+
+const rankOverrides = {
+  "TEDITOR": "S",
+  "PORTFOLIO": "C",
+  "SORTINGVISUALIZER": "A",
+  "HAMAJJ.GITHUB.IO": "SS"
+}
+
+const visibleProjects = computed(() => {
+  if (!profileData.value?.repositories) return []
+
+  return profileData.value.repositories
+    .filter(p => !hiddenTitles.includes(p.title))
+    .map(p => {
+      if (rankOverrides[p.title]) {
+        return {
+          ...p,
+          rank: rankOverrides[p.title]
+        }
+      }
+      return p
+    })
+})
 </script>

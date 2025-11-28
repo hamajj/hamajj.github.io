@@ -32,10 +32,10 @@
         {{ desc }}
       </p>
 
-      <button class="w-full border-2 border-white text-white py-2 font-bold hover:bg-white hover:text-black transition-colors uppercase tracking-widest flex items-center justify-center gap-2 group-hover:border-red-600 group-hover:text-red-500 group-hover:hover:bg-red-600 group-hover:hover:text-white">
+      <a :href="url" class="w-full border-2 border-white text-white py-2 font-bold hover:bg-white hover:text-black transition-colors uppercase tracking-widest flex items-center justify-center gap-2 group-hover:border-red-600 group-hover:text-red-500 group-hover:hover:bg-red-600 group-hover:hover:text-white">
         <span>EQUIP</span>
         <span class="text-xs opacity-50">[ENTER]</span>
-      </button>
+      </a>
     </div>
   </div>
 </template>
@@ -52,6 +52,7 @@ defineProps({
   tags: {
     type: Array,
     default: () => []
-  }
+  },
+  url: String
 })
 </script>
