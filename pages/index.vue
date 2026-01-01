@@ -4,8 +4,9 @@
     <AboutSection />
     <ProjectsSection />
     <ContactSection />
+    <BackgroundPipes />
   </div>
 </template>
-
+        
 <script setup>
 </script>
