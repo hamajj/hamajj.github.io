@@ -6,6 +6,7 @@
     <ContactSection />
     <BackgroundPipes />
     <KonamiEasterEgg />
+    <AriseEasterEgg />
   </div>
 </template>
         
