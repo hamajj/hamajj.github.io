@@ -5,6 +5,7 @@
     <ProjectsSection />
     <ContactSection />
     <BackgroundPipes />
+    <KonamiEasterEgg />
   </div>
 </template>
         
