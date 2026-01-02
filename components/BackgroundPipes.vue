@@ -205,13 +205,11 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
 })
 
-// Resize handler
 function handleResize(): void {
   resizeCanvas()
   initPipes()
 }
 
-// Props değiştiğinde boruları yeniden başlat
 watch(() => props.pipeCount, () => {
   initPipes()
 })

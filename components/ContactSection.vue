@@ -27,17 +27,11 @@
              <span class="font-bold text-white group-hover:text-purple-400">>> GITHUB</span>
              <span class="text-xs text-gray-500 group-hover:text-purple-300">[ACCESS]</span>
            </a>
-
-           <a href="#" class="group flex items-center justify-between border border-gray-600 p-4 hover:border-blue-400 hover:bg-blue-900/20 transition-all cursor-pointer">
-             <span class="font-bold text-white group-hover:text-blue-400">>> LINKEDIN_NETWORK</span>
-             <span class="text-xs text-gray-500 group-hover:text-blue-300">[CONNECT]</span>
-           </a>
          </div>
        </div>
 
-       <!-- Footer Decoration -->
        <div class="mt-8 pt-4 border-t border-gray-800 flex justify-between text-xs text-gray-600 font-mono">
-         <span>ID: 8473-2910-AD</span>
+         <span>ID: 1234-5678-AB</span>
          <span>ENCRYPTION: NONE</span>
        </div>
     </div>
