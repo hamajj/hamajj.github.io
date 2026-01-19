@@ -19,7 +19,7 @@
            />
            <span v-else class="text-6xl text-gray-700 font-bold">?</span>
            <div class="absolute bottom-0 left-0 w-full bg-red-600 text-white text-xs text-center py-1">
-             {{profileData?.profile?.login ?? 'UNKNOWN' }}
+             {{profileData?.profile?.name ?? 'UNKNOWN' }}
            </div>
         </div>
 
@@ -31,7 +31,7 @@
           
           <div class="font-mono text-lg md:text-xl text-gray-300 space-y-4">
             <p>
-              <span class="text-yellow-400">>></span> SUBJECT: {{ profileData?.profile?.name ?? profileData?.profile?.login ?? 'UNKNOWN' }}
+              <span class="text-yellow-400">>></span> SUBJECT: {{ profileData?.profile?.login ?? profileData?.profile?.login ?? 'UNKNOWN' }}
             </p>
             <p>
               <span class="text-yellow-400">>></span> CLASS: Hobbyist Web & Systems-Level Developer
