@@ -263,3 +263,46 @@ body {
 .animate-slide-in-left {
     animation: slide-in-left 0.5s ease-out forwards;
 }
+
+/* Rainbow shift for ULTRAKILL rank / SSS gradient */
+@keyframes rainbow-shift {
+    0%   { background-position: 0%   50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Screen-edge red vignette pulse (used for low HP) */
+@keyframes vignette-pulse {
+    0%, 100% { opacity: 0.5; }
+    50%       { opacity: 1;   }
+}
+
+/* HUD glow border utility */
+.hud-glow-red {
+    box-shadow: 0 0 12px #ff0000, inset 0 0 12px #ff000015;
+}
+.hud-glow-blue {
+    box-shadow: 0 0 12px #00ffff, inset 0 0 12px #00ffff15;
+}
+.hud-glow-gold {
+    box-shadow: 0 0 12px #ffd700, inset 0 0 12px #ffd70015;
+}
+
+/* Rank letter drop-shadow utilities */
+.rank-d   { color: #888888; filter: drop-shadow(0 0 6px #888888); }
+.rank-c   { color: #4488ff; filter: drop-shadow(0 0 6px #4488ff); }
+.rank-b   { color: #44ff88; filter: drop-shadow(0 0 6px #44ff88); }
+.rank-a   { color: #ff8800; filter: drop-shadow(0 0 6px #ff8800); }
+.rank-s   { color: #ff2222; filter: drop-shadow(0 0 6px #ff2222); }
+.rank-ss  { color: #cc0000; filter: drop-shadow(0 0 8px #cc0000); }
+.rank-sss {
+    background: linear-gradient(180deg, #ffd700 0%, #ff8800 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 8px #ffd700);
+}
+
+/* Hide native cursor everywhere (Cursor.vue takes over) */
+*, *::before, *::after {
+    cursor: none !important;
+}
