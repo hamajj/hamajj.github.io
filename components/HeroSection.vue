@@ -3,14 +3,11 @@
 
     <!-- Phase 1: Loading screen with red progress bar -->
     <div v-if="phase === 'loading'" class="relative z-10 w-full max-w-2xl px-8">
-      <!-- V1 silhouette -->
+      <!-- V1 silhouette (CSS art) -->
       <div class="flex justify-center mb-8">
-        <img
-          src="/V1.png"
-          alt="V1"
-          class="h-32 object-contain v1-silhouette"
-          style="filter: brightness(0) saturate(100%) invert(10%) sepia(100%) saturate(5000%) hue-rotate(0deg) brightness(0.8);"
-        />
+        <div class="v1-silhouette font-black italic text-red-900 select-none" style="font-size: 7rem; line-height: 1; letter-spacing: -0.05em;">
+          V1
+        </div>
       </div>
 
       <div class="text-red-600 font-black text-2xl tracking-[0.5em] mb-6 uppercase glitch-subtle" data-text="ULTRAKILL">
@@ -135,7 +132,9 @@ const startBootSequence = () => {
 <style scoped>
 .v1-silhouette {
   animation: v1-pulse 2s ease-in-out infinite;
-  filter: drop-shadow(0 0 20px #ff0000) brightness(0) saturate(100%) invert(10%) sepia(100%) saturate(5000%) hue-rotate(0deg);
+  filter: drop-shadow(0 0 30px #ff0000);
+  text-shadow: 0 0 40px #ff0000, 0 0 80px #ff000060;
+  color: #1a0000;
 }
 
 @keyframes v1-pulse {
