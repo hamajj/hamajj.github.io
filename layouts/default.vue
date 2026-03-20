@@ -1,5 +1,5 @@
 <template>
-  <div class="crt min-h-screen relative overflow-hidden">
+  <div class="crt noise-overlay min-h-screen relative overflow-hidden" style="background:#000;">
 
     <!-- Blood vignette overlay (shows when HP is low) -->
     <Transition name="vignette-fade">
@@ -11,45 +11,58 @@
     </Transition>
 
     <!-- HUD Top Bar -->
-    <header class="fixed top-0 left-0 w-full z-50 p-3 pointer-events-none">
-      <div class="flex justify-between items-start gap-4">
+    <header class="fixed top-0 left-0 w-full z-50 pointer-events-none" style="padding: 6px 8px;">
+      <div class="flex justify-between items-start gap-3">
 
         <!-- Health / Armor status -->
         <div class="flex flex-col gap-1 pointer-events-auto">
           <!-- HP -->
-          <div class="flex items-center gap-2 bg-black/90 px-3 py-1.5 border-2 border-white relative overflow-hidden"
-               :class="{ 'border-red-600': hp < 30, 'animate-pulse': hp < 20 }">
+          <div
+            class="flex items-center gap-2 px-3 py-1.5 relative"
+            style="background:#000; border: 1px solid rgba(255,255,255,0.3); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);"
+            :style="hp < 30 ? { borderColor: 'rgba(255,0,0,0.7)', boxShadow: '0 0 10px rgba(255,0,0,0.4)' } : {}"
+          >
+            <!-- double-border inner accent -->
+            <div class="absolute inset-[3px] border border-red-900/30 pointer-events-none" style="clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);"></div>
+
             <div
-              class="text-3xl font-black leading-none transition-colors duration-300"
-              :class="hp < 30 ? 'text-red-500' : 'text-red-600'"
+              class="font-display leading-none transition-colors duration-200 tabular-nums"
+              style="font-size: 2rem; min-width: 3ch; text-align: right;"
+              :style="{ color: hp < 30 ? '#ff2222' : '#ff0000', textShadow: `0 0 12px ${hp < 30 ? '#ff0000' : '#cc000060'}` }"
             >{{ Math.ceil(hp) }}</div>
+
             <div class="flex flex-col gap-0.5">
-              <span class="text-[10px] text-white tracking-widest">HP</span>
-              <!-- Bar: red portion + yellow overheal -->
-              <div class="flex w-32 h-2 bg-red-900/40 overflow-hidden">
+              <span style="font-size:9px; letter-spacing:0.3em; color:#fff; font-family:'VCR OSD Mono',monospace;">HP</span>
+              <!-- Segmented HP bar -->
+              <div class="flex gap-px" style="width:120px; height:8px;">
                 <div
-                  class="h-full bg-red-600 transition-all duration-300"
-                  :style="{ width: `${Math.min(100, hp)}%`, boxShadow: hp < 30 ? '0 0 6px #ff0000' : 'none' }"
-                ></div>
-                <!-- Yellow overheal segment (if hp > 100) -->
-                <div
-                  v-if="hp > 100"
-                  class="h-full bg-yellow-400 transition-all duration-300"
-                  :style="{ width: `${Math.min(32, (hp - 100) * 0.32)}px` }"
+                  v-for="i in 20" :key="i"
+                  style="flex:1; border: 1px solid rgba(255,255,255,0.1); transition: background 0.2s, box-shadow 0.2s;"
+                  :style="i <= Math.ceil(hp / 5)
+                    ? { background: hp < 30 ? '#ff2222' : '#cc0000', boxShadow: `0 0 3px ${hp < 30 ? '#ff2222' : '#cc0000'}` }
+                    : { background: 'rgba(80,0,0,0.3)' }"
                 ></div>
               </div>
             </div>
           </div>
 
           <!-- ARMOR -->
-          <div class="flex items-center gap-2 bg-black/90 px-3 py-1.5 border-2 border-blue-400/60">
-            <div class="text-3xl font-black text-blue-400 leading-none">{{ Math.ceil(armor) }}</div>
+          <div
+            class="flex items-center gap-2 px-3 py-1.5 relative"
+            style="background:#000; border: 1px solid rgba(0,200,255,0.25); clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);"
+          >
+            <div class="absolute inset-[3px] border pointer-events-none" style="border-color:rgba(0,255,255,0.08); clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%);"></div>
+
+            <div class="font-display leading-none tabular-nums" style="font-size:2rem; min-width:3ch; text-align:right; color:#00ccff; text-shadow: 0 0 10px #00ccff60;">{{ Math.ceil(armor) }}</div>
             <div class="flex flex-col gap-0.5">
-              <span class="text-[10px] text-white tracking-widest">ARMOR</span>
-              <div class="w-32 h-2 bg-blue-900/40 overflow-hidden">
+              <span style="font-size:9px; letter-spacing:0.3em; color:#fff; font-family:'VCR OSD Mono',monospace;">ARMOR</span>
+              <div class="flex gap-px" style="width:120px; height:8px;">
                 <div
-                  class="h-full bg-blue-400 transition-all duration-300"
-                  :style="{ width: `${armor}%`, boxShadow: '0 0 4px #00ffff' }"
+                  v-for="i in 20" :key="i"
+                  style="flex:1; border: 1px solid rgba(255,255,255,0.06); transition: background 0.2s;"
+                  :style="i <= Math.ceil(armor / 5)
+                    ? { background: '#00aacc', boxShadow: '0 0 3px #00ccff' }
+                    : { background: 'rgba(0,30,40,0.4)' }"
                 ></div>
               </div>
             </div>
@@ -58,21 +71,23 @@
 
         <!-- Navigation -->
         <nav class="pointer-events-auto">
-          <ul class="flex gap-1">
+          <ul class="flex gap-0">
             <li v-for="(link, i) in navLinks" :key="link.id">
               <a
                 :href="`#${link.id}`"
-                class="block bg-black/90 border px-4 py-2 transition-all duration-150 relative group font-mono text-sm tracking-widest uppercase"
-                :class="activeSection === link.id
-                  ? 'border-red-600 text-red-500 bg-red-900/20'
-                  : 'border-white/40 text-white/80 hover:border-white hover:text-white'"
+                class="block px-5 py-2 relative font-display transition-all duration-100"
+                style="font-size:1rem; letter-spacing:0.12em; text-transform:uppercase; background:#000;"
+                :style="activeSection === link.id
+                  ? { color: '#fff', borderBottom: '2px solid #ff0000', borderTop: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 0 12px rgba(255,0,0,0.3)', background: 'rgba(120,0,0,0.15)' }
+                  : { color: 'rgba(255,255,255,0.55)', borderBottom: '2px solid transparent', borderTop: '1px solid rgba(255,255,255,0.08)' }"
               >
-                <!-- Active indicator bar -->
+                <span style="font-size:9px; font-family:'VCR OSD Mono',monospace; opacity:0.4; margin-right:4px;">0{{ i + 1 }}</span>{{ link.label }}
+                <!-- Active bottom bar -->
                 <span
                   v-if="activeSection === link.id"
-                  class="absolute bottom-0 left-0 w-full h-0.5 bg-red-600"
+                  class="absolute bottom-0 left-0 w-full"
+                  style="height:2px; background:#ff0000; box-shadow: 0 0 6px #ff0000;"
                 ></span>
-                <span class="text-[10px] opacity-50 mr-1">0{{ i + 1 }}</span>{{ link.label }}
               </a>
             </li>
           </ul>
@@ -95,13 +110,13 @@
     <Cursor />
 
     <!-- Style Meter (bottom-right) -->
-    <div class="fixed bottom-8 right-8 z-50 pointer-events-none">
+    <div class="fixed bottom-6 right-6 z-50 pointer-events-none">
       <StyleMeter />
     </div>
 
-    <!-- Background Grid -->
-    <div class="fixed inset-0 z-0 pointer-events-none opacity-20">
-      <div class="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+    <!-- Background Grid — fine red tinted grid -->
+    <div class="fixed inset-0 z-0 pointer-events-none" style="opacity:0.07;">
+      <div class="absolute inset-0" style="background-image: linear-gradient(rgba(255,0,0,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,0,0.4) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 60%, transparent 100%);"></div>
     </div>
   </div>
 </template>
@@ -109,7 +124,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// ── Navigation ────────────────────────────────────────────────
 const navLinks = [
   { id: 'about',    label: 'ABOUT'    },
   { id: 'projects', label: 'PROJECTS' },
@@ -117,48 +131,35 @@ const navLinks = [
 ]
 
 const activeSection = ref('')
-
 let sectionObserver = null
 
 const setupObserver = () => {
   const options = { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
   sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        activeSection.value = entry.target.id
-      }
-    })
+    entries.forEach(entry => { if (entry.isIntersecting) activeSection.value = entry.target.id })
   }, options)
-
   navLinks.forEach(({ id }) => {
     const el = document.getElementById(id)
     if (el) sectionObserver.observe(el)
   })
 }
 
-// ── HP / ARMOR dynamics ───────────────────────────────────────
 const hp    = ref(100)
 const armor = ref(100)
 
-let hpRegenInterval = null
+let hpRegenInterval    = null
 let armorRegenInterval = null
-let lastScrollY = 0
 let ticking = false
 
 const handleScroll = () => {
   if (!ticking) {
     requestAnimationFrame(() => {
-      const delta = Math.abs(window.scrollY - lastScrollY)
-      lastScrollY = window.scrollY
-
-      // Drain armor on scroll, HP when armor empty
+      const delta = Math.abs(window.scrollY - (handleScroll._lastY || 0))
+      handleScroll._lastY = window.scrollY
       if (delta > 2) {
         const drain = Math.min(delta * 0.04, 0.8)
-        if (armor.value > 0) {
-          armor.value = Math.max(0, armor.value - drain)
-        } else {
-          hp.value = Math.max(1, hp.value - drain * 0.5)
-        }
+        if (armor.value > 0) armor.value = Math.max(0, armor.value - drain)
+        else hp.value = Math.max(1, hp.value - drain * 0.5)
       }
       ticking = false
     })
@@ -168,26 +169,16 @@ const handleScroll = () => {
 
 const handleMouseOver = (e) => {
   if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
-    // Hovering interactive elements gives a tiny HP regen (blood is fuel)
     hp.value = Math.min(125, hp.value + 1.5)
   }
 }
 
 onMounted(() => {
   setupObserver()
-
   window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('mouseover', handleMouseOver)
-
-  // Slow HP regen
-  hpRegenInterval = setInterval(() => {
-    if (hp.value < 100) hp.value = Math.min(100, hp.value + 0.2)
-  }, 200)
-
-  // Armor regens faster than HP
-  armorRegenInterval = setInterval(() => {
-    if (armor.value < 100) armor.value = Math.min(100, armor.value + 0.5)
-  }, 200)
+  hpRegenInterval    = setInterval(() => { if (hp.value    < 100) hp.value    = Math.min(100, hp.value    + 0.2) }, 200)
+  armorRegenInterval = setInterval(() => { if (armor.value < 100) armor.value = Math.min(100, armor.value + 0.5) }, 200)
 })
 
 onUnmounted(() => {
@@ -201,15 +192,13 @@ onUnmounted(() => {
 
 <style scoped>
 .blood-vignette {
-  background: radial-gradient(ellipse at center, transparent 40%, rgba(180, 0, 0, 0.85) 100%);
+  background: radial-gradient(ellipse at center, transparent 35%, rgba(160, 0, 0, 0.9) 100%);
   animation: blood-pulse 1.5s ease-in-out infinite;
 }
-
 @keyframes blood-pulse {
-  0%, 100% { opacity: 0.6; }
-  50%       { opacity: 1;   }
+  0%, 100% { opacity: 0.55; }
+  50%       { opacity: 1; }
 }
-
 .vignette-fade-enter-active { transition: opacity 0.5s ease; }
 .vignette-fade-leave-active { transition: opacity 0.5s ease; }
 .vignette-fade-enter-from   { opacity: 0; }

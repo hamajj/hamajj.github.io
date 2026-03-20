@@ -1,96 +1,105 @@
 <template>
   <div
-    class="group relative bg-black border-2 flex flex-col h-full overflow-hidden transition-all duration-300"
+    class="group relative flex flex-col h-full transition-all duration-200"
+    style="background:#000; position:relative;"
     :style="{
-      borderColor: hovered ? rankColor : '#374151',
-      boxShadow: hovered ? `0 0 20px ${rankColor}60, inset 0 0 20px ${rankColor}10` : 'none'
+      border: `2px solid ${hovered ? rankColor : 'rgba(255,255,255,0.1)'}`,
+      boxShadow: hovered ? `0 0 20px ${rankColor}55, inset 0 0 16px ${rankColor}08` : 'none',
+      clipPath: 'polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px))',
     }"
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"
   >
-    <!-- Rank Stamp (top-right) -->
-    <div class="absolute top-0 right-0 p-2 z-10 transition-all duration-300" :class="hovered ? 'opacity-100' : 'opacity-40'">
-      <span
-        class="font-black italic leading-none transition-all duration-300"
-        :style="rankLetterStyle"
-      >{{ rank }}</span>
+    <!-- Inner accent border -->
+    <div
+      class="absolute inset-[4px] pointer-events-none transition-opacity duration-200"
+      :style="{
+        border: `1px solid ${rankColor}25`,
+        clipPath: 'polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px))',
+        opacity: hovered ? 1 : 0,
+      }"
+    ></div>
+
+    <!-- Rank stamp (top-right) -->
+    <div class="absolute top-0 right-0 z-10" style="padding:8px 10px;">
+      <span class="font-display transition-all duration-200" :style="rankLetterStyle" style="line-height:1;">{{ rank }}</span>
     </div>
 
-    <!-- Corner brackets (top-left) colored by rank -->
-    <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 transition-colors duration-300"
-         :style="{ borderColor: hovered ? rankColor : '#4b5563' }"></div>
-    <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 transition-colors duration-300"
-         :style="{ borderColor: hovered ? rankColor : '#4b5563' }"></div>
-
-    <!-- Image / Preview area -->
+    <!-- Preview area -->
     <div
-      class="h-44 border-b-2 relative overflow-hidden transition-colors duration-300"
-      :style="{ borderColor: hovered ? rankColor : '#374151', background: `radial-gradient(ellipse at center, ${rankColor}08 0%, #000 100%)` }"
+      class="relative overflow-hidden"
+      style="height:140px; border-bottom: 1px solid rgba(255,255,255,0.08);"
+      :style="{ background: `radial-gradient(ellipse at center, ${rankColor}0a 0%, #000 100%)`, borderBottomColor: hovered ? rankColor + '40' : 'rgba(255,255,255,0.08)' }"
     >
-      <div class="absolute inset-0 flex items-center justify-center font-mono text-xs tracking-widest"
-           :style="{ color: hovered ? rankColor + '80' : '#374151' }">
-        [NO SIGNAL]
-      </div>
-      <!-- Rank difficulty bar (bottom of image) -->
-      <div class="absolute bottom-0 left-0 w-full h-1 bg-gray-900">
+      <!-- NO SIGNAL text -->
+      <div
+        class="absolute inset-0 flex items-center justify-center transition-colors duration-200"
+        style="font-family:'VCR OSD Mono',monospace; font-size:10px; letter-spacing:0.25em;"
+        :style="{ color: hovered ? rankColor + '70' : 'rgba(255,255,255,0.1)' }"
+      >[NO SIGNAL]</div>
+
+      <!-- Scanlines -->
+      <div class="absolute inset-0 pointer-events-none" style="background: repeating-linear-gradient(transparent 0px, transparent 3px, rgba(0,0,0,0.3) 3px, rgba(0,0,0,0.3) 4px);"></div>
+
+      <!-- Bottom fill bar (animates on hover) -->
+      <div class="absolute bottom-0 left-0 w-full" style="height:2px; background:#111;">
         <div
           class="h-full transition-all duration-500"
           :style="{ width: hovered ? '100%' : '0%', background: rankColor, boxShadow: `0 0 6px ${rankColor}` }"
         ></div>
       </div>
-      <!-- Scanline overlay -->
-      <div class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.4)_50%)] bg-[size:100%_4px] pointer-events-none"></div>
+
+      <!-- Difficulty pips (top-left) -->
+      <div class="absolute top-2 left-2 flex gap-1">
+        <span
+          v-for="n in 5" :key="n"
+          style="display:inline-block; width:7px; height:7px; transition: background 0.2s, box-shadow 0.2s;"
+          :style="{
+            background: n <= rankDifficulty ? rankColor : 'transparent',
+            border: `1px solid ${rankColor}`,
+            boxShadow: n <= rankDifficulty ? `0 0 4px ${rankColor}` : 'none',
+          }"
+        ></span>
+      </div>
     </div>
 
     <!-- Content -->
-    <div class="p-5 flex flex-col flex-grow">
-      <!-- Rank badge inline with title -->
-      <div class="flex items-start justify-between mb-2 gap-2">
-        <h3
-          class="text-xl font-black uppercase tracking-wider transition-colors duration-300"
-          :style="{ color: hovered ? rankColor : '#ffffff' }"
-        >{{ title }}</h3>
+    <div class="flex flex-col flex-grow" style="padding:1rem 1rem 1rem;">
+      <!-- Title -->
+      <h3
+        class="font-display transition-colors duration-200 mb-2"
+        style="font-size:1.25rem; letter-spacing:0.08em; line-height:1.1;"
+        :style="{ color: hovered ? rankColor : '#fff' }"
+      >{{ title }}</h3>
 
-        <!-- Difficulty pips -->
-        <div class="flex gap-0.5 mt-1 shrink-0">
-          <span
-            v-for="n in 5"
-            :key="n"
-            class="w-2 h-2 border transition-all duration-300"
-            :style="{
-              background: n <= rankDifficulty ? rankColor : 'transparent',
-              borderColor: rankColor,
-              boxShadow: n <= rankDifficulty ? `0 0 4px ${rankColor}` : 'none'
-            }"
-          ></span>
-        </div>
-      </div>
-
-      <div class="flex flex-wrap gap-1.5 mb-3">
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-1 mb-3">
         <span
-          v-for="tag in tags"
-          :key="tag"
-          class="text-[10px] border px-2 py-0.5 font-mono tracking-widest transition-colors duration-300"
+          v-for="tag in tags" :key="tag"
+          style="font-size:9px; font-family:'VCR OSD Mono',monospace; padding: 2px 8px; letter-spacing:0.15em; transition: border-color 0.2s, color 0.2s;"
           :style="hovered
-            ? { borderColor: rankColor, color: rankColor }
-            : { borderColor: '#4b5563', color: '#9ca3af' }"
+            ? { border: `1px solid ${rankColor}`, color: rankColor }
+            : { border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.4)' }"
         >{{ tag }}</span>
       </div>
 
-      <p class="text-gray-400 text-xs mb-5 flex-grow font-mono leading-relaxed">
+      <!-- Description -->
+      <p style="font-family:'VCR OSD Mono',monospace; font-size:11px; line-height:1.7; color:rgba(255,255,255,0.45); flex-grow:1; margin-bottom:1rem;">
         {{ desc }}
       </p>
 
+      <!-- EQUIP button -->
       <a
         :href="url"
         target="_blank"
-        class="w-full border-2 py-2 font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-150 relative overflow-hidden group/btn"
+        class="font-display text-center transition-all duration-100 relative overflow-hidden"
+        style="display:block; padding: 0.55rem 1rem; font-size:1rem; letter-spacing:0.2em; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px)); border: 2px solid;"
         :style="hovered
-          ? { borderColor: rankColor, color: '#000', background: rankColor, boxShadow: `0 0 16px ${rankColor}80` }
-          : { borderColor: '#ffffff', color: '#ffffff', background: 'transparent' }"
+          ? { borderColor: rankColor, background: rankColor, color: '#000', boxShadow: `0 0 16px ${rankColor}80` }
+          : { borderColor: 'rgba(255,255,255,0.25)', background: 'transparent', color: '#fff' }"
       >
-        <span>EQUIP</span>
-        <span class="text-[10px] opacity-60">[ENTER]</span>
+        EQUIP
+        <span style="position:absolute; bottom:2px; right:6px; font-size:8px; opacity:0.5; font-family:'VCR OSD Mono',monospace;">[ENTER]</span>
       </a>
     </div>
   </div>
@@ -111,8 +120,8 @@ const props = defineProps({
 const hovered = ref(false)
 
 const rankMap = {
-  'D':         { color: '#888888', size: '2rem', difficulty: 1 },
-  'C':         { color: '#4488ff', size: '2rem', difficulty: 2 },
+  'D':         { color: '#888888', size: '2rem',   difficulty: 1 },
+  'C':         { color: '#4488ff', size: '2rem',   difficulty: 2 },
   'B':         { color: '#44ff88', size: '2.2rem', difficulty: 2 },
   'A':         { color: '#ff8800', size: '2.4rem', difficulty: 3 },
   'S':         { color: '#ff2222', size: '2.6rem', difficulty: 4 },
@@ -121,8 +130,8 @@ const rankMap = {
   'ULTRAKILL': { color: '#ff0000', size: '1.2rem', difficulty: 5 },
 }
 
-const rankData = computed(() => rankMap[props.rank] || rankMap['C'])
-const rankColor = computed(() => rankData.value.color)
+const rankData       = computed(() => rankMap[props.rank] || rankMap['C'])
+const rankColor      = computed(() => rankData.value.color)
 const rankDifficulty = computed(() => rankData.value.difficulty)
 
 const rankLetterStyle = computed(() => {
@@ -133,7 +142,7 @@ const rankLetterStyle = computed(() => {
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
       backgroundClip: 'text',
-      filter: `drop-shadow(0 0 6px #ffd700)`,
+      filter: 'drop-shadow(0 0 6px #ffd700)',
     }
   }
   if (props.rank === 'ULTRAKILL') {

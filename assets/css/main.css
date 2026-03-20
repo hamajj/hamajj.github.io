@@ -1,47 +1,48 @@
 @import url('https://fonts.cdnfonts.com/css/vcr-osd-mono');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Bebas+Neue&display=swap');
 @tailwind components;
 @tailwind utilities;
 
 :root {
-    --uk-red: #ff0000;
-    --uk-blue: #00ffff;
+    --uk-red:    #ff0000;
+    --uk-red2:   #cc0000;
+    --uk-red3:   #ff1111;
+    --uk-blue:   #00ffff;
     --uk-yellow: #ffff00;
-    --uk-bg: #000000;
-    --uk-text: #ffffff;
+    --uk-bg:     #000000;
+    --uk-text:   #ffffff;
+    --uk-grey:   #1a1a1a;
+    --uk-grey2:  #2a2a2a;
+    --uk-dim:    #888888;
 }
 
-html,
-body {
+html, body {
     background: var(--uk-bg);
     color: var(--uk-text);
     font-family: "VCR OSD Mono", monospace;
     overflow-x: hidden;
-    cursor: crosshair;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-    background: #111;
-}
+/* ── Scrollbar ───────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; background: #000; }
+::-webkit-scrollbar-thumb { background: var(--uk-red); border: 1px solid #000; }
 
-::-webkit-scrollbar-thumb {
-    background: var(--uk-red);
-    border: 2px solid #000;
-}
+/* ── Hide native cursor ──────────────────────────────────────── */
+*, *::before, *::after { cursor: none !important; }
 
-/* CRT Scanline & Flicker Effect */
+/* ── CRT Scanlines ───────────────────────────────────────────── */
 .crt::before {
     content: " ";
     display: block;
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(to bottom,
-            rgba(18, 16, 16, 0) 50%,
-            rgba(0, 0, 0, 0.25) 50%);
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(0,0,0,0.18) 2px,
+        rgba(0,0,0,0.18) 4px
+    );
     background-size: 100% 4px;
     z-index: 9998;
     pointer-events: none;
@@ -51,11 +52,8 @@ body {
     content: " ";
     display: block;
     position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(18, 16, 16, 0.1);
+    inset: 0;
+    background: rgba(18,16,16,0.08);
     opacity: 0;
     z-index: 9998;
     pointer-events: none;
@@ -63,115 +61,50 @@ body {
 }
 
 @keyframes flicker {
-    0% {
-        opacity: 0.02;
-    }
-
-    5% {
-        opacity: 0.05;
-    }
-
-    10% {
-        opacity: 0.02;
-    }
-
-    15% {
-        opacity: 0.06;
-    }
-
-    20% {
-        opacity: 0.02;
-    }
-
-    25% {
-        opacity: 0.02;
-    }
-
-    30% {
-        opacity: 0.02;
-    }
-
-    35% {
-        opacity: 0.01;
-    }
-
-    40% {
-        opacity: 0.02;
-    }
-
-    45% {
-        opacity: 0.02;
-    }
-
-    50% {
-        opacity: 0.02;
-    }
-
-    55% {
-        opacity: 0.05;
-    }
-
-    60% {
-        opacity: 0.02;
-    }
-
-    65% {
-        opacity: 0.02;
-    }
-
-    70% {
-        opacity: 0.01;
-    }
-
-    75% {
-        opacity: 0.02;
-    }
-
-    80% {
-        opacity: 0.02;
-    }
-
-    85% {
-        opacity: 0.02;
-    }
-
-    90% {
-        opacity: 0.02;
-    }
-
-    95% {
-        opacity: 0.02;
-    }
-
-    100% {
-        opacity: 0.02;
-    }
+    0%   { opacity: 0.02; }
+    5%   { opacity: 0.06; }
+    10%  { opacity: 0.02; }
+    15%  { opacity: 0.07; }
+    20%  { opacity: 0.01; }
+    30%  { opacity: 0.03; }
+    50%  { opacity: 0.01; }
+    55%  { opacity: 0.06; }
+    70%  { opacity: 0.01; }
+    100% { opacity: 0.02; }
 }
 
-/* Glitch Text Effect */
+/* ── Noise grain overlay ─────────────────────────────────────── */
+.noise-overlay::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9997;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px 128px;
+}
+
+/* ── Glitch Text ─────────────────────────────────────────────── */
 .glitch {
     position: relative;
     color: white;
 }
-
 .glitch::before,
 .glitch::after {
     content: attr(data-text);
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: black;
 }
-
 .glitch::before {
     left: 2px;
     text-shadow: -1px 0 #ff0000;
     clip: rect(24px, 550px, 90px, 0);
     animation: glitch-anim-2 3s infinite linear alternate-reverse;
 }
-
 .glitch::after {
     left: -2px;
     text-shadow: -1px 0 #00ffff;
@@ -180,114 +113,205 @@ body {
 }
 
 @keyframes glitch-anim {
-    0% {
-        clip: rect(14px, 9999px, 127px, 0);
-    }
-
-    20% {
-        clip: rect(81px, 9999px, 63px, 0);
-    }
-
-    40% {
-        clip: rect(102px, 9999px, 2px, 0);
-    }
-
-    60% {
-        clip: rect(27px, 9999px, 98px, 0);
-    }
-
-    80% {
-        clip: rect(11px, 9999px, 13px, 0);
-    }
-
-    100% {
-        clip: rect(129px, 9999px, 86px, 0);
-    }
+    0%   { clip: rect(14px,  9999px, 127px, 0); transform: translateX(0); }
+    20%  { clip: rect(81px,  9999px, 63px,  0); transform: translateX(-2px); }
+    40%  { clip: rect(102px, 9999px, 2px,   0); transform: translateX(2px); }
+    60%  { clip: rect(27px,  9999px, 98px,  0); transform: translateX(0); }
+    80%  { clip: rect(11px,  9999px, 13px,  0); transform: translateX(-1px); }
+    100% { clip: rect(129px, 9999px, 86px,  0); transform: translateX(0); }
 }
-
 @keyframes glitch-anim-2 {
-    0% {
-        clip: rect(129px, 9999px, 36px, 0);
-    }
-
-    20% {
-        clip: rect(36px, 9999px, 4px, 0);
-    }
-
-    40% {
-        clip: rect(104px, 9999px, 11px, 0);
-    }
-
-    60% {
-        clip: rect(62px, 9999px, 72px, 0);
-    }
-
-    80% {
-        clip: rect(36px, 9999px, 13px, 0);
-    }
-
-    100% {
-        clip: rect(13px, 9999px, 107px, 0);
-    }
+    0%   { clip: rect(129px, 9999px, 36px,  0); transform: translateX(0); }
+    20%  { clip: rect(36px,  9999px, 4px,   0); transform: translateX(2px); }
+    40%  { clip: rect(104px, 9999px, 11px,  0); transform: translateX(-2px); }
+    60%  { clip: rect(62px,  9999px, 72px,  0); transform: translateX(0); }
+    80%  { clip: rect(36px,  9999px, 13px,  0); transform: translateX(1px); }
+    100% { clip: rect(13px,  9999px, 107px, 0); transform: translateX(0); }
 }
 
-/* Chromatic Aberration Utility */
+/* ── Glitch hover on headings ────────────────────────────────── */
+.glitch-hover {
+    position: relative;
+    display: inline-block;
+}
+.glitch-hover:hover {
+    animation: glitch-shake 0.25s steps(2) both;
+}
+@keyframes glitch-shake {
+    0%   { transform: translateX(0); }
+    25%  { transform: translateX(-3px) skewX(-2deg); }
+    50%  { transform: translateX(3px)  skewX(2deg); }
+    75%  { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+/* ── Subtle glitch ───────────────────────────────────────────── */
+.glitch-subtle { position: relative; }
+.glitch-subtle::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 2px;
+    color: #ff0000;
+    opacity: 0;
+    clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+    animation: subtle-glitch 4s infinite;
+}
+@keyframes subtle-glitch {
+    0%, 88%, 100% { transform: translateX(0);    opacity: 0; }
+    90%            { transform: translateX(-3px); opacity: 0.6; }
+    92%            { transform: translateX(3px);  opacity: 0.6; }
+    94%            { transform: translateX(0);    opacity: 0; }
+}
+
+/* ── Chromatic aberration ────────────────────────────────────── */
 .chromatic-text {
     text-shadow: 2px 0 var(--uk-red), -2px 0 var(--uk-blue);
 }
 
-/* HUD Utilities */
-.hud-border {
-    border: 2px solid var(--uk-text);
-    box-shadow: 0 0 10px var(--uk-text);
+/* ── Display font utility ────────────────────────────────────── */
+.font-display {
+    font-family: "Big Shoulders Display", "Bebas Neue", Impact, sans-serif;
+    font-weight: 900;
 }
 
-.hud-bg {
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(4px);
+/* ── HUD panel ───────────────────────────────────────────────── */
+.hud-panel {
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: inset 0 0 0 1px rgba(255,0,0,0.08);
+    position: relative;
+}
+.hud-panel::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border: 1px solid rgba(255,0,0,0.12);
+    pointer-events: none;
 }
 
-/* Animations */
-@keyframes slide-in-left {
-    from {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+/* ── Double-border frame ─────────────────────────────────────── */
+.double-border {
+    border: 2px solid #fff;
+    outline: 1px solid rgba(255,0,0,0.5);
+    outline-offset: 3px;
 }
 
-.animate-slide-in-left {
-    animation: slide-in-left 0.5s ease-out forwards;
+/* ── Angular clip-path cuts ──────────────────────────────────── */
+.clip-cut-br {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+}
+.clip-cut-tr {
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+}
+.clip-cut-all {
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+.clip-cut-btn {
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
 }
 
-/* Rainbow shift for ULTRAKILL rank / SSS gradient */
-@keyframes rainbow-shift {
-    0%   { background-position: 0%   50%; }
-    100% { background-position: 200% 50%; }
+/* ── UK Button ───────────────────────────────────────────────── */
+.uk-btn {
+    font-family: "Big Shoulders Display", "Bebas Neue", Impact, sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 0.6rem 1.8rem;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: background 0.08s, color 0.08s, border-color 0.08s;
+    position: relative;
+    overflow: hidden;
+}
+.uk-btn:hover {
+    background: var(--uk-red);
+    border-color: var(--uk-red);
+    color: #fff;
+    box-shadow: 0 0 18px rgba(255,0,0,0.6);
+}
+.uk-btn-red {
+    background: var(--uk-red);
+    border-color: var(--uk-red);
+    color: #fff;
+}
+.uk-btn-red:hover {
+    background: #fff;
+    border-color: #fff;
+    color: var(--uk-red);
+    box-shadow: 0 0 18px rgba(255,255,255,0.4);
 }
 
-/* Screen-edge red vignette pulse (used for low HP) */
-@keyframes vignette-pulse {
-    0%, 100% { opacity: 0.5; }
-    50%       { opacity: 1;   }
+/* ── Segmented bar (health / style meter style) ──────────────── */
+.seg-bar {
+    display: flex;
+    gap: 2px;
+    height: 10px;
+}
+.seg-bar-fill {
+    flex: 1;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: background 0.15s, box-shadow 0.15s;
+}
+.seg-bar-fill.active {
+    background: var(--uk-red);
+    box-shadow: 0 0 4px var(--uk-red);
+    border-color: var(--uk-red);
+}
+.seg-bar-fill.active-blue {
+    background: #00ffff;
+    box-shadow: 0 0 4px #00ffff;
+    border-color: #00ffff;
 }
 
-/* HUD glow border utility */
-.hud-glow-red {
-    box-shadow: 0 0 12px #ff0000, inset 0 0 12px #ff000015;
+/* ── Section title style ─────────────────────────────────────── */
+.section-title {
+    font-family: "Big Shoulders Display", "Bebas Neue", Impact, sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 8vw, 5.5rem);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    line-height: 0.9;
+    color: #fff;
 }
-.hud-glow-blue {
-    box-shadow: 0 0 12px #00ffff, inset 0 0 12px #00ffff15;
-}
-.hud-glow-gold {
-    box-shadow: 0 0 12px #ffd700, inset 0 0 12px #ffd70015;
+.section-number {
+    color: var(--uk-red);
+    font-family: "VCR OSD Mono", monospace;
+    font-size: 0.9em;
+    letter-spacing: 0.05em;
 }
 
-/* Rank letter drop-shadow utilities */
+/* ── Red corner accent ───────────────────────────────────────── */
+.corner-tl::before,
+.corner-br::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-color: var(--uk-red);
+    border-style: solid;
+}
+.corner-tl::before {
+    top: -2px; left: -2px;
+    border-width: 3px 0 0 3px;
+}
+.corner-br::after {
+    bottom: -2px; right: -2px;
+    border-width: 0 3px 3px 0;
+}
+
+/* ── Glow utilities ──────────────────────────────────────────── */
+.glow-red  { box-shadow: 0 0 14px rgba(255,0,0,0.55),  inset 0 0 14px rgba(255,0,0,0.06); }
+.glow-blue { box-shadow: 0 0 14px rgba(0,255,255,0.4), inset 0 0 14px rgba(0,255,255,0.06); }
+.glow-gold { box-shadow: 0 0 14px rgba(255,215,0,0.5), inset 0 0 14px rgba(255,215,0,0.06); }
+.hud-glow-red  { box-shadow: 0 0 12px #ff0000, inset 0 0 12px #ff000015; }
+.hud-glow-blue { box-shadow: 0 0 12px #00ffff, inset 0 0 12px #00ffff15; }
+.hud-glow-gold { box-shadow: 0 0 12px #ffd700, inset 0 0 12px #ffd70015; }
+
+/* ── Rank colors ─────────────────────────────────────────────── */
 .rank-d   { color: #888888; filter: drop-shadow(0 0 6px #888888); }
 .rank-c   { color: #4488ff; filter: drop-shadow(0 0 6px #4488ff); }
 .rank-b   { color: #44ff88; filter: drop-shadow(0 0 6px #44ff88); }
@@ -302,7 +326,45 @@ body {
     filter: drop-shadow(0 0 8px #ffd700);
 }
 
-/* Hide native cursor everywhere (Cursor.vue takes over) */
-*, *::before, *::after {
-    cursor: none !important;
+/* ── Rainbow shift (ULTRAKILL / SSS) ─────────────────────────── */
+@keyframes rainbow-shift {
+    0%   { background-position: 0%   50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* ── Screen vignette pulse (low HP) ─────────────────────────── */
+@keyframes vignette-pulse {
+    0%, 100% { opacity: 0.5; }
+    50%       { opacity: 1; }
+}
+
+/* ── Slide in ────────────────────────────────────────────────── */
+@keyframes slide-in-left {
+    from { transform: translateX(-100%); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+}
+.animate-slide-in-left { animation: slide-in-left 0.4s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ── Scan line sweep (section enter) ─────────────────────────── */
+@keyframes scan-sweep {
+    from { transform: translateY(-100%); opacity: 0.4; }
+    to   { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ── Terminal cursor blink ───────────────────────────────────── */
+.blink-cursor { animation: blink 0.7s step-start infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ── Red border separator ─────────────────────────────────────── */
+.red-rule {
+    height: 2px;
+    background: linear-gradient(90deg, var(--uk-red) 0%, var(--uk-red2) 60%, transparent 100%);
+    margin: 0.5rem 0;
+}
+
+/* ── Boot log animation ──────────────────────────────────────── */
+.boot-log { animation: boot-line-in 0.15s ease-out both; }
+@keyframes boot-line-in {
+    from { opacity: 0; transform: translateX(-6px); }
+    to   { opacity: 1; transform: translateX(0); }
 }
