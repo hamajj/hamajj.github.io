@@ -1,52 +1,39 @@
-<template>
-  <div class="flex flex-col items-end gap-1 transition-opacity duration-500" :class="{ 'opacity-0': stylePoints === 0, 'opacity-100': stylePoints > 0 }">
-    <!-- Rank Letter -->
-    <div class="relative">
-      <span class="text-6xl font-black italic text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400" 
-            style="-webkit-text-stroke: 2px #000; filter: drop-shadow(4px 4px 0px #000);">
-        {{ currentRank }}
-      </span>
-      <span class="absolute top-0 left-0 text-6xl font-black italic text-white animate-ping opacity-50" v-if="rankChanged">
-        {{ currentRank }}
-      </span>
-    </div>
-
-    <!-- Style Info -->
-    <div class="bg-black/80 border-2 border-white p-2 flex flex-col items-end min-w-[150px]">
-      <div class="text-xs text-gray-400 font-mono uppercase mb-1">STYLE INDEX</div>
-      <div class="w-full h-2 bg-gray-800 mb-1">
-         <div class="h-full bg-white transition-all duration-200" :style="{ width: `${(stylePoints % 100)}%` }"></div>
-      </div>
-      <div class="text-right font-mono text-white text-sm">
-        + {{ lastAction }}
-      </div>
-    </div>
-  </div>
-</template>
-
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 const stylePoints = ref(0)
 const lastAction = ref('')
 const currentRank = ref('D')
 const rankChanged = ref(false)
 
-let decayInterval
+let decayInterval: ReturnType<typeof setInterval>
 
 const ranks = [
-  { threshold: 0, label: 'D' },
-  { threshold: 100, label: 'C' },
-  { threshold: 300, label: 'B' },
-  { threshold: 600, label: 'A' },
-  { threshold: 1000, label: 'S' },
-  { threshold: 1500, label: 'SS' },
-  { threshold: 2000, label: 'SSS' },
-  { threshold: 3000, label: 'ULTRAKILL' },
+  { threshold: 0, label: 'D', color: 'text-gray-400' },
+  { threshold: 100, label: 'C', color: 'text-pink-400' },
+  { threshold: 300, label: 'B', color: 'text-fuchsia-400' },
+  { threshold: 600, label: 'A', color: 'text-terminal-amber' },
+  { threshold: 1000, label: 'S', color: 'text-rose-400' },
+  { threshold: 1500, label: 'SS', color: 'text-red-400' },
+  { threshold: 2000, label: 'SSS', color: 'text-ultra-red' },
+  { threshold: 3000, label: 'ULTRAKILL', color: 'text-ultra-red' },
 ]
 
+const currentRankInfo = computed(() => {
+  return ranks.slice().reverse().find(r => stylePoints.value >= r.threshold) || ranks[0]
+})
+
+const progressPercent = computed(() => {
+  const nextRank = ranks.find(r => r.threshold > stylePoints.value)
+  if (!nextRank) return 100
+  const prevRank = ranks[ranks.indexOf(nextRank) - 1]
+  const range = nextRank.threshold - (prevRank?.threshold || 0)
+  const progress = stylePoints.value - (prevRank?.threshold || 0)
+  return Math.min((progress / range) * 100, 100)
+})
+
 const updateRank = () => {
-  const newRank = ranks.slice().reverse().find(r => stylePoints.value >= r.threshold)?.label || 'D'
+  const newRank = currentRankInfo.value.label
   if (newRank !== currentRank.value) {
     currentRank.value = newRank
     rankChanged.value = true
@@ -54,7 +41,7 @@ const updateRank = () => {
   }
 }
 
-const addStyle = (points, action) => {
+const addStyle = (points: number, action: string) => {
   stylePoints.value += points
   lastAction.value = action.toUpperCase()
   updateRank()
@@ -64,8 +51,9 @@ const handleScroll = () => {
   addStyle(5, 'SCROLL')
 }
 
-const handleMouseOver = (e) => {
-  if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+const handleMouseOver = (e: MouseEvent) => {
+  const target = e.target as HTMLElement
+  if (target.tagName === 'A' || target.tagName === 'BUTTON') {
     addStyle(50, 'INTERACTION')
   }
 }
@@ -85,6 +73,73 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('mouseover', handleMouseOver)
-  clearInterval(decayInterval)
+  if (decayInterval) clearInterval(decayInterval)
 })
 </script>
+
+<template>
+  <Transition name="fade">
+    <div
+      v-if="stylePoints > 0"
+      class="fixed top-20 right-4 z-40 flex flex-col items-end gap-2"
+    >
+      <!-- Rank -->
+      <div class="relative">
+        <span
+          :class="currentRankInfo.color"
+          class="text-5xl font-bold tracking-tighter"
+          style="-webkit-text-stroke: 1px currentColor;"
+        >
+          {{ currentRank }}
+        </span>
+        <Transition name="ping">
+          <span
+            v-if="rankChanged"
+            :class="currentRankInfo.color"
+            class="absolute top-0 left-0 text-5xl font-bold animate-ping opacity-50"
+          >
+            {{ currentRank }}
+          </span>
+        </Transition>
+      </div>
+
+      <!-- Style box -->
+      <div class="bg-background/90 backdrop-blur-sm border border-terminal-cyan/30 p-3 min-w-[140px]">
+        <div class="text-xs text-muted-foreground font-mono uppercase mb-1">
+          STYLE INDEX
+        </div>
+        <div class="w-full h-1 bg-muted overflow-hidden">
+          <div
+            class="h-full bg-terminal-cyan transition-all duration-200"
+            :style="{ width: progressPercent + '%' }"
+          />
+        </div>
+        <div class="text-right font-mono text-terminal-green text-sm mt-1">
+          + {{ lastAction }}
+        </div>
+      </div>
+    </div>
+  </Transition>
+</template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.ping-enter-active,
+.ping-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.ping-enter-from,
+.ping-leave-to {
+  opacity: 0;
+}
+</style>

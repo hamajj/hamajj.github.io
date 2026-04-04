@@ -1,0 +1,290 @@
+# Portfolio Redesign Plan: Minimalist Terminal Aesthetic
+
+## Project Overview
+Complete UI/UX redesign of hamajj.github.io using Vue.js/Nuxt.js with Tailwind CSS and shadcn-vue components. Modern, minimalist, high-end terminal aesthetic.
+
+---
+
+## Design Direction: Minimalist Terminal
+
+### Core Aesthetic
+- Premium "hacker's workstation" vibe
+- Clean, monospace typography
+- Subtle terminal prompts throughout
+- Monochromatic base with strategic accent colors (red/cyan preserved)
+- Refined micro-interactions
+
+---
+
+## File Structure (Proposed)
+
+```
+├── components/
+│   ├── ui/                    # shadcn-vue components
+│   │   ├── button/
+│   │   ├── card/
+│   │   ├── badge/
+│   │   ├── command/
+│   │   └── dialog/
+│   ├── layout/
+│   │   ├── Header.vue         # Minimal nav with command palette trigger
+│   │   └── Footer.vue         # Subtle footer
+│   ├── sections/
+│   │   ├── HeroSection.vue    # Redesigned terminal-style hero
+│   │   ├── AboutSection.vue   # Terminal-style "whoami" output
+│   │   ├── ProjectsSection.vue
+│   │   └── ContactSection.vue
+│   ├── features/
+│   │   ├── GitHubGrid.vue     # Contribution graph
+│   │   ├── NowPlaying.vue     # Spotify integration
+│   │   ├── ParticleCanvas.vue # Interactive particles
+│   │   └── GenerativeHeader.vue
+│   └── easter-eggs/
+│       ├── KonamiEasterEgg.vue    # Preserved (style updates only)
+│       └── AriseEasterEgg.vue     # Preserved (style updates only)
+├── composables/
+│   ├── useKonamiCode.ts       # Preserved
+│   ├── useAriseCode.ts        # Preserved
+│   ├── useSpotify.ts          # New
+│   └── useGitHub.ts           # New
+├── server/api/
+│   ├── github-events.ts       # New: commit history
+│   ├── spotify.ts             # New: OAuth callback
+│   └── profile.ts             # Existing (preserve)
+└── assets/css/
+    └── main.css               # Redesigned
+```
+
+---
+
+## Section-by-Section Redesign
+
+### 1. Hero Section
+- Terminal-style boot sequence preserved but refined
+- Animated `$ whoami` prompt that reveals your identity
+- Generative art header as subtle animated background
+- Minimal, centered layout with your name/title
+
+### 2. About Section
+- Terminal prompt styling: `$ cat about.md`
+- Clean card with your info displayed as "output"
+- Stats/skills shown as a clean progress visualization
+
+### 3. GitHub Activity Grid
+- Full contribution graph (last 12 months)
+- Terminal framing: `$ git log --graph`
+- Hover shows specific commit counts per day
+- Color scheme: cyan accent for activity levels
+
+### 4. Now Playing Component
+- Spotify album art, track title, artist
+- Live status indicator (playing/paused)
+- Terminal aesthetic: `$ now-playing`
+- Position: floating bottom-right or inline in About
+
+### 5. Projects Section
+- Clean card grid with shadcn-vue Cards
+- Terminal framing: `$ ls ~/projects/`
+- Preserve ranking system but refine visual presentation
+
+### 6. Contact Section
+- Terminal prompt style: `$ echo "Hello" | mail`
+- Clean links to Email, GitHub
+
+---
+
+## New Features Detail
+
+### Command Palette (⌘K)
+- Press `⌘K` or `/` to open Spotlight-style command interface
+- Commands:
+  - `about` - Scroll to About section
+  - `projects` - Scroll to Projects section
+  - `contact` - Scroll to Contact section
+  - `github` - Open GitHub activity section
+  - `music` - Show Now Playing status
+  - `clear` - Close palette
+  - `help` - Show all commands
+  - `sudo godmode` - Hidden: triggers Konami easter egg
+- Global, triggered anywhere on the site
+
+### Particle Canvas
+- Interactive particle background responding to mouse movement
+- Preserves and enhances existing BackgroundPipes concept
+- Full-screen background layer
+- Mouse movement creates ripple/disturbance effects
+
+### Generative Header
+- Procedural geometric art based on current time
+- Changes subtly on each visit
+- Hero background layer
+- Creates unique visual identity per visit
+
+---
+
+## Dependencies to Add
+
+```json
+{
+  "dependencies": {
+    "radix-vue": "^1.x",
+    "class-variance-authority": "^0.7.x",
+    "clsx": "^2.x",
+    "tailwind-merge": "^2.x",
+    "lucide-vue-next": "^0.x"
+  }
+}
+```
+
+---
+
+## Easter Egg Preservation Strategy
+
+### Konami Code (↑↑↓↓←→←→BA)
+- Trigger: UNCHANGED
+- Effect: "GOD MODE ACTIVATED" overlay
+- Visual: Refined to match new aesthetic (cleaner typography, same glitch intensity)
+- File: `components/easter-eggs/KonamiEasterEgg.vue`
+
+### Arise Code (type "arise")
+- Trigger: UNCHANGED
+- Effect: "SYSTEM CORE OVERRIDE" window with Shadow Monarch theme
+- Visual: Restyled to match terminal aesthetic
+- File: `components/easter-eggs/AriseEasterEgg.vue`
+
+### StyleMeter
+- Integrated into layout (fixed position, top-right)
+- Refined minimal styling
+- D-to-ULTRAKILL ranking system preserved
+- File: `components/StyleMeter.vue` (existing, restyle only)
+
+### Hidden Command Palette Command
+- `sudo godmode` → triggers Konami easter egg
+- Adds discoverability layer to existing easter egg
+
+---
+
+## Spotify Integration Setup
+
+### Developer App Creation
+1. Navigate to: https://developer.spotify.com/dashboard
+2. Log in with Spotify account
+3. Click "Create App"
+4. Fill in details:
+   - App name: `Portfolio Now Playing`
+   - App description: `Shows current Spotify track on personal portfolio`
+   - Redirect URI: 
+     - Development: `http://localhost:3000/api/spotify/callback`
+     - Production: `https://hamajj.github.io/api/spotify/callback`
+5. After creation, copy Client ID and Client Secret
+
+### Environment Variables (.env)
+```
+SPOTIFY_CLIENT_ID=your_client_id_here
+SPOTIFY_CLIENT_SECRET=your_client_secret_here
+SPOTIFY_REFRESH_TOKEN=will_be_generated_after_oauth_flow
+```
+
+### OAuth Flow
+- Server-side OAuth implementation
+- Initial authorization generates refresh token
+- Refresh token stored securely
+- NowPlaying component fetches current track via server endpoint
+
+---
+
+## Implementation Phases
+
+### Phase 1: Project Setup
+1. Install shadcn-vue dependencies
+2. Initialize shadcn-vue configuration
+3. Set up component library structure (`components/ui/`)
+4. Configure Tailwind for shadcn-vue
+
+### Phase 2: Core Components
+1. Create shadcn-vue base components (Button, Card, Badge, Command, Dialog)
+2. Build Header component with Command Palette trigger
+3. Redesign sections with terminal aesthetic
+4. Preserve existing content/text
+
+### Phase 3: Features
+1. GitHub Contribution Grid
+   - New server endpoint: `/api/github-events`
+   - Contribution grid component
+   - Hover tooltips for daily stats
+
+2. Now Playing (Spotify)
+   - Server endpoint: `/api/spotify`
+   - OAuth callback handler
+   - NowPlaying component with album art
+
+3. Command Palette
+   - Global keyboard listener (⌘K, /)
+   - Fuzzy search implementation
+   - Navigation commands
+   - Hidden `sudo godmode` command
+
+4. Particle Canvas
+   - Enhanced background with mouse interactivity
+   - Performance optimized
+
+5. Generative Header
+   - Time-based procedural art
+   - Subtle animations
+
+### Phase 4: Easter Egg Integration
+1. Preserve Konami/Arise composables exactly
+2. Restyle easter egg overlays to match new aesthetic
+3. Integrate StyleMeter into layout
+4. Add hidden `sudo godmode` command to palette
+
+### Phase 5: Polish & Testing
+1. Refine animations and transitions
+2. Ensure responsive design (mobile, tablet, desktop)
+3. Test all easter eggs
+4. Run lint and typecheck
+5. Performance optimization
+
+---
+
+## Content Preservation
+
+All existing content to be preserved:
+- Bio text: "Hobbyist Web & Systems-Level Developer"
+- Mission statement: "Design efficient structures from browser to bare metal"
+- Personal quote: "Not a professional — just someone who loves to build"
+- Skills list (Vue.js, Nuxt, Python, C++, C, JavaScript, TypeScript, Bash)
+- Project rankings (S, SS, A, C overrides)
+- Contact email and GitHub link
+- All easter egg text and effects
+
+---
+
+## Visual Elements to Preserve/Adapt
+
+### Colors (Adapted to Terminal Theme)
+- Primary accent: Red (#ff0000) → Use sparingly for emphasis
+- Secondary accent: Cyan (#00ffff) → Primary accent color
+- Background: Black → Refined to deep charcoal/black
+- Text: White → Clean white/gray hierarchy
+
+### Effects
+- Glitch text effect → Preserve for key moments
+- CRT scanlines → Subtle, optional (CSS toggle)
+- Terminal prompts → New core visual element
+
+### Typography
+- Monospace font (VCR OSD Mono) → Preserve or use refined alternative
+- Consider: JetBrains Mono, Fira Code, or IBM Plex Mono as alternatives
+
+---
+
+## Notes
+
+- User approved: "Approved, proceed"
+- Content strategy: "Keep everything (Recommended)"
+- Spotify setup: User needs guidance (will provide step-by-step)
+- Design choice: Minimalist Terminal
+- GitHub visualization: Full Grid (contribution graph)
+- Music service: Spotify
+- Additional features: Command Palette, Interactive Particle Canvas, Generative Art Header

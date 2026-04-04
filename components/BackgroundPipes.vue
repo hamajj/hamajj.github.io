@@ -28,12 +28,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Ultrakill palette - koyu tonlar
 const PIPE_COLORS = [
-  '#8a0f1c', // Koyu kırmızı (ultra-red'in koyu tonu)
-  '#4a8a8f', // Koyu cyan/neon
+  '#8a0f1c', // Koyu kırmızı
+  '#8a1a4a', // Koyu pink
   '#5a0a12', // Daha koyu kırmızı
-  '#2a5a5f', // Daha koyu cyan
+  '#6b2170', // Koyu purple
   '#6a0e18', // Orta koyu kırmızı
-  '#1a4a4f', // Derin cyan
+  '#4a1a5f', // Derin purple
 ]
 
 // Yönler: 0=yukarı, 1=sağ, 2=aşağı, 3=sol
