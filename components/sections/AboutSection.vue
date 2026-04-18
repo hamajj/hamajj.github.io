@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import profileData from '~/data/github-profile.json'
+
 const skills = [
   { name: 'Vue.js', level: 70 },
   { name: 'Nuxt', level: 70 },
@@ -9,8 +11,7 @@ const skills = [
   { name: 'TypeScript', level: 75 },
   { name: 'Bash', level: 100 },
 ]
-
-const { data: profile } = useFetch('/api/profile')
+const profile = profileData.profile
 </script>
 
 <template>
@@ -27,18 +28,18 @@ const { data: profile } = useFetch('/api/profile')
         <div class="border border-border bg-card/50 backdrop-blur-sm p-6 space-y-4">
           <div class="flex items-center gap-4">
             <img
-              v-if="profile?.profile?.avatar"
-              :src="profile.profile.avatar"
-              :alt="profile.profile.name"
+              v-if="profile?.avatar"
+              :src="profile.avatar"
+              :alt="profile.name"
               class="w-16 h-16 border border-terminal-cyan/30"
             />
             <div class="w-16 h-16 bg-muted border border-border" v-else />
             <div>
               <h3 class="text-lg font-vcr text-foreground">
-                {{ profile?.profile?.name || 'hamajj' }}
+                {{ profile?.name || 'hamajj' }}
               </h3>
               <p class="text-sm text-terminal-cyan font-mono">
-                @{{ profile?.profile?.login || 'hamajj' }}
+                @{{ profile?.login || 'hamajj' }}
               </p>
             </div>
           </div>
@@ -46,7 +47,7 @@ const { data: profile } = useFetch('/api/profile')
           <div class="space-y-3 text-sm font-mono">
             <div>
               <span class="text-muted-foreground">BIO: </span>
-              <span class="text-foreground">{{ profile?.profile?.bio || 'Hobbyist Web & Systems-Level Developer' }}</span>
+              <span class="text-foreground">{{ profile?.bio || 'Hobbyist Web & Systems-Level Developer' }}</span>
             </div>
             <div>
               <span class="text-muted-foreground">MISSION: </span>

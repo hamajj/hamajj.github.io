@@ -1,0 +1,90 @@
+[
+  {
+    "title": "HAMAJJ.GITHUB.IO",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "Vue",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/hamajj.github.io"
+  },
+  {
+    "title": "TEDITOR",
+    "desc": "Teditor is a command line text editor similar to nano, built with Python 🐍",
+    "rank": "A",
+    "tags": [
+      "Python",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/teditor"
+  },
+  {
+    "title": "RANALANG",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "Go",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/ranalang"
+  },
+  {
+    "title": "KRYPTON",
+    "desc": "Vite-powered LSB steganography engine. Hiding secrets in pixels with pure bitwise logic. 🌌",
+    "rank": "A",
+    "tags": [
+      "Vue",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/krypton"
+  },
+  {
+    "title": "SORTINGVISUALIZER",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "C",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/sortingvisualizer"
+  },
+  {
+    "title": "GODASHBOARD",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "Go",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/godashboard"
+  },
+  {
+    "title": "PORTFOLIO",
+    "desc": "command-line themed portfolio",
+    "rank": "A",
+    "tags": [
+      "JavaScript",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/portfolio"
+  },
+  {
+    "title": "HAMAJJ",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "UNKNOWN",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/hamajj"
+  }
+]

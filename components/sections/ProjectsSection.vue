@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import reposData from '~/data/github-repos.json'
 
-const { data: repos, status } = useFetch('/api/repos')
+const repos = reposData as Repo[]
+const status = 'success'
 
 const rankOverrides: Record<string, string> = {
   'TEDITOR': 'S',
@@ -30,8 +32,8 @@ interface Repo {
 }
 
 const filteredRepos = computed(() => {
-  if (!repos.value) return []
-  return (repos.value as Repo[])
+  if (!repos.length) return []
+  return repos
     .filter(repo => !hiddenTitles.includes(repo.title))
     .map(repo => ({
       ...repo,

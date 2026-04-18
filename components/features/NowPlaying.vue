@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 
 interface TrackData {
   isPlaying: boolean
@@ -13,10 +13,17 @@ const track = ref<TrackData | null>(null)
 const loading = ref(true)
 const error = ref(false)
 const expanded = ref(false)
+const runtimeConfig = useRuntimeConfig()
+const liveWidgetEnabled = computed(() => runtimeConfig.public.enableNowPlaying)
 
-let refreshInterval: ReturnType<typeof setInterval>
+let refreshInterval: ReturnType<typeof setInterval> | undefined
 
 const fetchNowPlaying = async () => {
+  if (!liveWidgetEnabled.value) {
+    loading.value = false
+    return
+  }
+
   try {
     const data = await $fetch<TrackData>('/api/spotify/now-playing')
     track.value = data
@@ -30,18 +37,25 @@ const fetchNowPlaying = async () => {
 }
 
 onMounted(() => {
+  if (!liveWidgetEnabled.value) {
+    loading.value = false
+    return
+  }
+
   fetchNowPlaying()
   refreshInterval = setInterval(fetchNowPlaying, 30000)
 })
 
 onUnmounted(() => {
-  clearInterval(refreshInterval)
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+  }
 })
 </script>
 
 <template>
   <div
-    v-if="!error && !loading"
+    v-if="liveWidgetEnabled && !error && !loading"
     class="fixed bottom-4 right-4 z-40"
   >
     <!-- Collapsed: Small indicator -->

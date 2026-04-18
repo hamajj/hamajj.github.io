@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
+import contributionsData from '~/data/github-contributions.json'
 
 interface ContributionDay {
   date: string
@@ -7,8 +8,8 @@ interface ContributionDay {
   level: number
 }
 
-const contributions = ref<ContributionDay[]>([])
-const loading = ref(true)
+const contributions = ref<ContributionDay[]>(contributionsData as ContributionDay[])
+const loading = false
 const hoveredDay = ref<ContributionDay | null>(null)
 const tooltipPos = ref({ x: 0, y: 0 })
 
@@ -61,25 +62,6 @@ const showTooltip = (day: ContributionDay, event: MouseEvent) => {
   hoveredDay.value = day
   tooltipPos.value = { x: event.clientX, y: event.clientY }
 }
-
-onMounted(async () => {
-  try {
-    const data = await $fetch<{ contributions: ContributionDay[] }>('/api/github-events')
-    contributions.value = data.contributions
-  } catch {
-    // Generate empty grid as fallback
-    const days: ContributionDay[] = []
-    const now = new Date()
-    for (let i = 364; i >= 0; i--) {
-      const d = new Date(now)
-      d.setDate(d.getDate() - i)
-      days.push({ date: d.toISOString().split('T')[0], count: 0, level: 0 })
-    }
-    contributions.value = days
-  } finally {
-    loading.value = false
-  }
-})
 </script>
 
 <template>

@@ -3,8 +3,11 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "sync:github-data": "node scripts/generate-github-data.mjs",
+    "prebuild": "node scripts/generate-github-data.mjs",
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "pregenerate": "node scripts/generate-github-data.mjs",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"

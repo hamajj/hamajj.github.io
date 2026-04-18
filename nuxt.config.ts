@@ -19,7 +19,9 @@ export default defineNuxtConfig({
   },
   
   nitro: {
-    preset: 'vercel'
+    prerender: {
+      routes: ['/'],
+    },
   },
   
   runtimeConfig: {
@@ -27,6 +29,9 @@ export default defineNuxtConfig({
     spotifyClientId: process.env.SPOTIFY_CLIENT_ID || '',
     spotifyClientSecret: process.env.SPOTIFY_CLIENT_SECRET || '',
     spotifyRefreshToken: process.env.SPOTIFY_REFRESH_TOKEN || '',
+    public: {
+      enableNowPlaying: process.env.NUXT_PUBLIC_ENABLE_NOW_PLAYING !== 'false',
+    },
   },
   
   app: {
