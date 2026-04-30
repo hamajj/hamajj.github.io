@@ -1,5 +1,60 @@
 [
   {
+    "title": "SORTINGVISUALIZER",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "C",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/sortingvisualizer"
+  },
+  {
+    "title": "KRYPTON",
+    "desc": "Vite-powered LSB steganography engine. Hiding secrets in pixels with pure bitwise logic. 🌌",
+    "rank": "A",
+    "tags": [
+      "Vue",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/krypton"
+  },
+  {
+    "title": "RANALANG",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "Go",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/ranalang"
+  },
+  {
+    "title": "GODASHBOARD",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "Go",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/godashboard"
+  },
+  {
+    "title": "ROBLOX-PIANO-ASSISTER",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "UNKNOWN",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/roblox-piano-assister"
+  },
+  {
     "title": "HAMAJJ.GITHUB.IO",
     "desc": "No description.",
     "rank": "A",
@@ -20,50 +75,6 @@
     ],
     "image": null,
     "url": "https://github.com/hamajj/teditor"
-  },
-  {
-    "title": "RANALANG",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "Go",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/ranalang"
-  },
-  {
-    "title": "KRYPTON",
-    "desc": "Vite-powered LSB steganography engine. Hiding secrets in pixels with pure bitwise logic. 🌌",
-    "rank": "A",
-    "tags": [
-      "Vue",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/krypton"
-  },
-  {
-    "title": "SORTINGVISUALIZER",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "C",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/sortingvisualizer"
-  },
-  {
-    "title": "GODASHBOARD",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "Go",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/godashboard"
   },
   {
     "title": "PORTFOLIO",

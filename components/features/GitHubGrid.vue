@@ -18,7 +18,6 @@ const levelColors = [
   'bg-terminal-cyan/20',
   'bg-terminal-cyan/40',
   'bg-terminal-cyan/60',
-  'bg-terminal-cyan/80',
   'bg-terminal-cyan',
 ]
 
@@ -26,18 +25,27 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 const dayLabels = ['', 'Mon', '', 'Wed', '', 'Fri', '']
 
 const weeks = computed(() => {
-  const result: ContributionDay[][] = []
-  let currentWeek: ContributionDay[] = []
+  const result: Array<Array<ContributionDay | null>> = []
+  let currentWeek: Array<ContributionDay | null> = []
 
   for (const day of contributions.value) {
     const d = new Date(day.date)
-    if (d.getDay() === 0 && currentWeek.length > 0) {
+    const dayOfWeek = d.getUTCDay()
+
+    if (currentWeek.length === 0 && result.length === 0) {
+      currentWeek.push(...Array.from({ length: dayOfWeek }, () => null))
+    } else if (dayOfWeek === 0 && currentWeek.length > 0) {
+      while (currentWeek.length < 7) currentWeek.push(null)
       result.push(currentWeek)
       currentWeek = []
     }
+
     currentWeek.push(day)
   }
-  if (currentWeek.length > 0) result.push(currentWeek)
+  if (currentWeek.length > 0) {
+    while (currentWeek.length < 7) currentWeek.push(null)
+    result.push(currentWeek)
+  }
 
   return result
 })
@@ -46,9 +54,9 @@ const monthLabels = computed(() => {
   const labels: { label: string; col: number }[] = []
   let lastMonth = -1
   for (let w = 0; w < weeks.value.length; w++) {
-    const firstDay = weeks.value[w][0]
+    const firstDay = weeks.value[w].find(Boolean)
     if (firstDay) {
-      const month = new Date(firstDay.date).getMonth()
+      const month = new Date(firstDay.date).getUTCMonth()
       if (month !== lastMonth) {
         labels.push({ label: months[month], col: w })
         lastMonth = month
@@ -107,13 +115,14 @@ const showTooltip = (day: ContributionDay, event: MouseEvent) => {
             <div class="flex gap-[3px]">
               <div v-for="(week, wi) in weeks" :key="wi" class="flex flex-col gap-[3px]">
                 <div
-                  v-for="day in week"
-                  :key="day.date"
+                  v-for="(day, di) in week"
+                  :key="day?.date ?? `empty-${wi}-${di}`"
                   :class="[
-                    'w-[11px] h-[11px] cursor-pointer transition-colors',
-                    levelColors[day.level] || levelColors[0]
+                    'w-[11px] h-[11px] transition-colors',
+                    day ? 'cursor-pointer' : 'pointer-events-none opacity-0',
+                    day ? (levelColors[day.level] || levelColors[0]) : levelColors[0]
                   ]"
-                  @mouseenter="showTooltip(day, $event)"
+                  @mouseenter="day && showTooltip(day, $event)"
                   @mouseleave="hoveredDay = null"
                 />
               </div>

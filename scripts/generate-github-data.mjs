@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url'
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const dataDir = resolve(rootDir, 'data')
+await loadDotEnv()
+
 const username = process.env.GITHUB_USERNAME || 'hamajj'
 const githubToken = process.env.GITHUB_TOKEN
 
@@ -21,6 +23,34 @@ const defaultProfile = {
     avatar: '',
     html_url: `https://github.com/${username}`,
   },
+}
+
+async function loadDotEnv() {
+  try {
+    const raw = await readFile(resolve(rootDir, '.env'), 'utf8')
+    for (const line of raw.split('\n')) {
+      const trimmed = line.trim()
+      if (!trimmed || trimmed.startsWith('#')) continue
+
+      const separatorIndex = trimmed.indexOf('=')
+      if (separatorIndex === -1) continue
+
+      const key = trimmed.slice(0, separatorIndex).trim()
+      let value = trimmed.slice(separatorIndex + 1).trim()
+      if (!key || process.env[key] !== undefined) continue
+
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1)
+      }
+
+      process.env[key] = value
+    }
+  } catch {
+    // Deployment platforms provide env vars directly; a local .env is optional.
+  }
 }
 
 function formatDate(date) {
@@ -90,57 +120,73 @@ function toRepos(repos) {
     }))
 }
 
-function toContributions(events) {
-  const contributions = createEmptyContributions()
-  const counts = Object.fromEntries(
-    contributions.map((day) => [day.date, 0]),
-  )
-
-  for (const event of events) {
-    const date = event.created_at?.slice(0, 10)
-    if (date && Object.hasOwn(counts, date)) {
-      counts[date] += 1
-    }
-  }
-
-  const maxCount = Math.max(...Object.values(counts), 1)
-
-  return contributions.map((day) => {
-    const count = counts[day.date] ?? 0
-
-    return {
-      date: day.date,
-      count,
-      level: count === 0 ? 0 : Math.min(Math.ceil((count / maxCount) * 4), 5),
-    }
-  })
+function contributionLevelToNumber(level) {
+  return {
+    NONE: 0,
+    FIRST_QUARTILE: 1,
+    SECOND_QUARTILE: 2,
+    THIRD_QUARTILE: 3,
+    FOURTH_QUARTILE: 4,
+  }[level] ?? 0
 }
 
-async function fetchEvents() {
-  const events = []
+function normalizeContributionCalendar(calendar) {
+  return calendar.weeks.flatMap((week) =>
+    week.contributionDays.map((day) => ({
+      date: day.date,
+      count: day.contributionCount,
+      level: contributionLevelToNumber(day.contributionLevel),
+    })),
+  )
+}
 
-  for (let page = 1; page <= 3; page += 1) {
-    try {
-      const batch = await fetchJson(
-        `https://api.github.com/users/${username}/events/public?per_page=100&page=${page}`,
-      )
-
-      if (!Array.isArray(batch) || batch.length === 0) {
-        break
-      }
-
-      events.push(...batch)
-    } catch (error) {
-      if (events.length === 0) {
-        throw error
-      }
-
-      console.warn(`Partial events sync after page ${page - 1}: ${error.message}`)
-      break
-    }
+async function fetchContributionCalendar() {
+  if (!githubToken) {
+    throw new Error('GITHUB_TOKEN is required for the real GitHub contribution calendar')
   }
 
-  return events
+  const query = `
+    query Contributions($login: String!) {
+      user(login: $login) {
+        contributionsCollection {
+          contributionCalendar {
+            weeks {
+              contributionDays {
+                date
+                contributionCount
+                contributionLevel
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+
+  const response = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query, variables: { login: username } }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`${response.status} ${response.statusText} for GitHub GraphQL contributions`)
+  }
+
+  const data = await response.json()
+  if (data.errors?.length) {
+    throw new Error(data.errors.map((error) => error.message).join('; '))
+  }
+
+  const calendar = data.data?.user?.contributionsCollection?.contributionCalendar
+  if (!calendar?.weeks) {
+    throw new Error(`No contribution calendar found for ${username}`)
+  }
+
+  return normalizeContributionCalendar(calendar)
 }
 
 async function syncFile(filename, producer, fallback) {
@@ -172,6 +218,6 @@ await syncFile(
 
 await syncFile(
   'github-contributions.json',
-  async () => toContributions(await fetchEvents()),
+  fetchContributionCalendar,
   createEmptyContributions(),
 )
