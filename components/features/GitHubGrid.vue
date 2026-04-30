@@ -12,13 +12,16 @@ const contributions = ref<ContributionDay[]>(contributionsData as ContributionDa
 const loading = false
 const hoveredDay = ref<ContributionDay | null>(null)
 const tooltipPos = ref({ x: 0, y: 0 })
+const cellSize = 10
+const cellGap = 2
+const columnPitch = cellSize + cellGap
 
 const levelColors = [
-  'bg-muted',
-  'bg-terminal-cyan/20',
-  'bg-terminal-cyan/40',
-  'bg-terminal-cyan/60',
-  'bg-terminal-cyan',
+  'bg-[#1c1c22]',
+  'bg-[#7a244f] shadow-[0_0_5px_rgba(255,105,180,0.22)]',
+  'bg-[#b43a7b] shadow-[0_0_7px_rgba(255,105,180,0.35)]',
+  'bg-[#e857a3] shadow-[0_0_9px_rgba(255,105,180,0.5)]',
+  'bg-[#ff69b4] shadow-[0_0_12px_rgba(255,105,180,0.72)]',
 ]
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -92,12 +95,12 @@ const showTooltip = (day: ContributionDay, event: MouseEvent) => {
         <!-- Grid -->
         <div v-else>
           <!-- Month Labels -->
-          <div class="flex gap-[3px] mb-1 ml-8 text-[10px] font-mono text-muted-foreground">
+          <div class="flex mb-1 ml-8 text-[10px] font-mono text-muted-foreground">
             <div
               v-for="label in monthLabels"
               :key="label.label + label.col"
               class="absolute"
-              :style="{ marginLeft: (label.col * 14) + 'px' }"
+              :style="{ marginLeft: (label.col * columnPitch) + 'px' }"
             >
               {{ label.label }}
             </div>
@@ -105,23 +108,24 @@ const showTooltip = (day: ContributionDay, event: MouseEvent) => {
 
           <div class="flex gap-0 mt-6">
             <!-- Day Labels -->
-            <div class="flex flex-col gap-[3px] mr-2 text-[10px] font-mono text-muted-foreground">
-              <div v-for="label in dayLabels" :key="label" class="h-[11px] flex items-center">
+            <div class="flex flex-col mr-2 text-[10px] font-mono text-muted-foreground" :style="{ gap: `${cellGap}px` }">
+              <div v-for="label in dayLabels" :key="label" class="flex items-center" :style="{ height: `${cellSize}px` }">
                 {{ label }}
               </div>
             </div>
 
             <!-- Weeks -->
-            <div class="flex gap-[3px]">
-              <div v-for="(week, wi) in weeks" :key="wi" class="flex flex-col gap-[3px]">
+            <div class="flex" :style="{ gap: `${cellGap}px` }">
+              <div v-for="(week, wi) in weeks" :key="wi" class="flex flex-col" :style="{ gap: `${cellGap}px` }">
                 <div
                   v-for="(day, di) in week"
                   :key="day?.date ?? `empty-${wi}-${di}`"
                   :class="[
-                    'w-[11px] h-[11px] transition-colors',
+                    'transition-colors',
                     day ? 'cursor-pointer' : 'pointer-events-none opacity-0',
                     day ? (levelColors[day.level] || levelColors[0]) : levelColors[0]
                   ]"
+                  :style="{ width: `${cellSize}px`, height: `${cellSize}px` }"
                   @mouseenter="day && showTooltip(day, $event)"
                   @mouseleave="hoveredDay = null"
                 />
@@ -135,7 +139,7 @@ const showTooltip = (day: ContributionDay, event: MouseEvent) => {
             <div
               v-for="(color, i) in levelColors"
               :key="i"
-              :class="['w-[11px] h-[11px]', color]"
+              :class="['w-[10px] h-[10px]', color]"
             />
             <span>More</span>
           </div>

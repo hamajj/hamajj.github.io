@@ -1,5 +1,16 @@
 [
   {
+    "title": "HAMAJJ.GITHUB.IO",
+    "desc": "No description.",
+    "rank": "A",
+    "tags": [
+      "Vue",
+      "GITHUB"
+    ],
+    "image": null,
+    "url": "https://github.com/hamajj/hamajj.github.io"
+  },
+  {
     "title": "SORTINGVISUALIZER",
     "desc": "No description.",
     "rank": "A",
@@ -53,17 +64,6 @@
     ],
     "image": null,
     "url": "https://github.com/hamajj/roblox-piano-assister"
-  },
-  {
-    "title": "HAMAJJ.GITHUB.IO",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "Vue",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/hamajj.github.io"
   },
   {
     "title": "TEDITOR",
