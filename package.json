@@ -10,23 +10,21 @@
     "pregenerate": "node scripts/generate-github-data.mjs",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxi typecheck"
   },
   "dependencies": {
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "lucide-vue-next": "^1.0.0",
     "nuxt": "^4.2.1",
-    "radix-vue": "^1.9.17",
-    "tailwind-merge": "^3.5.0",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@types/node": "^26.6.3",
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
     "tailwindcss": "3",
-    "typescript": "^6.0.2"
+    "typescript": "^6.0.2",
+    "vue-tsc": "^3.3.11"
   }
 }

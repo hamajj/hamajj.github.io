@@ -4,104 +4,93 @@ export default {
   content: [
     "./components/**/*.{vue,js,ts}",
     "./pages/**/*.{vue,js,ts}",
-    "./app.vue",
-    "./lib/**/*.{js,ts}",
+    "./error.vue",
+    "./data/**/*.{js,ts}",
   ],
   theme: {
-    container: {
-      center: true,
-      padding: '2rem',
-      screens: {
-        '2xl': '1400px',
-      },
-    },
     extend: {
       fontFamily: {
-        vcr: ['"VCR OSD Mono"', 'monospace'],
-        mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
+        pixel: ['"Press Start 2P"', 'monospace'],
+        vt: ['VT323', 'monospace'],
+        ui: ['Tahoma', '"MS Sans Serif"', '"Segoe UI"', 'Verdana', 'sans-serif'],
       },
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+        desktop: {
+          DEFAULT: '#008080',
+          dark: '#006666',
+          deep: '#004d4d',
         },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+        win: {
+          gray: '#c0c0c0',
+          light: '#dfdfdf',
+          mid: '#808080',
+          dark: '#000000',
+          white: '#ffffff',
         },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+        title: {
+          blue: '#000080',
+          sky: '#1084d0',
+          inactive: '#808080',
         },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+        acc: {
+          lime: '#32cd32',
+          pink: '#ff69b4',
+          cyan: '#00e5ff',
+          yellow: '#ffe600',
+          orange: '#ff7a00',
+          purple: '#a020f0',
+          red: '#e02020',
         },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-        'ultra-black': '#050405',
-        'ultra-red': '#ff1b2d',
-        'ultra-neon': '#ff69b4',
-        'hud-gray': '#a1a1a1',
-        'terminal-green': '#c084fc',
-        'terminal-cyan': '#ff69b4',
-        'terminal-amber': '#fb7185',
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
+        'win-open': {
+          from: { opacity: '0', transform: 'scale(0.96)' },
+          to: { opacity: '1', transform: 'scale(1)' },
         },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
-        },
-        'cursor-blink': {
-          '0%, 50%': { opacity: '1' },
-          '51%, 100%': { opacity: '0' },
-        },
-        'fade-in': {
-          from: { opacity: '0', transform: 'translateY(10px)' },
+        'menu-up': {
+          from: { opacity: '0', transform: 'translateY(8px)' },
           to: { opacity: '1', transform: 'translateY(0)' },
         },
-        'slide-up': {
-          from: { opacity: '0', transform: 'translateY(20px)' },
-          to: { opacity: '1', transform: 'translateY(0)' },
+        blink: {
+          '0%, 49%': { opacity: '1' },
+          '50%, 100%': { opacity: '0' },
         },
-        'glow': {
-          '0%, 100%': { boxShadow: '0 0 5px currentColor, 0 0 10px currentColor' },
-          '50%': { boxShadow: '0 0 20px currentColor, 0 0 30px currentColor' },
+        stripes: {
+          from: { backgroundPosition: '0 0' },
+          to: { backgroundPosition: '28px 0' },
+        },
+        'pet-bounce': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-6px)' },
+        },
+        'shake': {
+          '0%, 100%': { transform: 'translate(0, 0)' },
+          '20%': { transform: 'translate(-3px, 1px)' },
+          '40%': { transform: 'translate(3px, -1px)' },
+          '60%': { transform: 'translate(-2px, -2px)' },
+          '80%': { transform: 'translate(2px, 2px)' },
+        },
+        'flash': {
+          '0%': { opacity: '0' },
+          '10%': { opacity: '1' },
+          '100%': { opacity: '1' },
+        },
+        'tip-in': {
+          from: { opacity: '0', transform: 'translateY(4px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
         },
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        'cursor-blink': 'cursor-blink 1s step-end infinite',
-        'fade-in': 'fade-in 0.3s ease-out',
-        'slide-up': 'slide-up 0.5s ease-out',
-        'glow': 'glow 2s ease-in-out infinite',
+        'win-open': 'win-open 0.14s ease-out',
+        'menu-up': 'menu-up 0.12s ease-out',
+        blink: 'blink 1s step-end infinite',
+        stripes: 'stripes 0.6s linear infinite',
+        'pet-bounce': 'pet-bounce 0.5s ease-in-out infinite',
+        shake: 'shake 0.3s linear 3',
+        flash: 'flash 0.4s ease-out',
+        'tip-in': 'tip-in 0.25s ease-out',
       },
     },
   },
   plugins: [],
-};
+}

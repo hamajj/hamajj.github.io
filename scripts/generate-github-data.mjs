@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -95,6 +95,31 @@ async function writeJson(filename, data) {
   await writeFile(resolve(dataDir, filename), `${JSON.stringify(data, null, 2)}\n`)
 }
 
+async function downloadFavicon(avatarUrl) {
+  if (!avatarUrl) return
+  try {
+    const response = await fetch(avatarUrl, { headers })
+    if (!response.ok) {
+      throw new Error(`${response.status} ${response.statusText}`)
+    }
+    const bytes = Buffer.from(await response.arrayBuffer())
+    if (bytes.length < 100) throw new Error('avatar response too small')
+
+    const isPng = bytes.subarray(0, 4).toString('hex') === '89504e47'
+    const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8
+    if (!isPng && !isJpeg) throw new Error('avatar is neither PNG nor JPEG')
+
+    const filename = isPng ? 'favicon.png' : 'favicon.jpg'
+    await writeFile(resolve(rootDir, 'public', filename), bytes)
+    // drop the other format so only one icon file ships
+    const stale = resolve(rootDir, 'public', isPng ? 'favicon.jpg' : 'favicon.png')
+    await rm(stale, { force: true })
+    console.log(`Updated public/${filename} (${bytes.length} bytes)`)
+  } catch (error) {
+    console.warn(`Keeping previous favicon: ${error.message}`)
+  }
+}
+
 function toProfile(user) {
   return {
     profile: {
@@ -107,17 +132,84 @@ function toProfile(user) {
   }
 }
 
-function toRepos(repos) {
-  return repos
-    .filter((repo) => !repo.fork && !repo.archived)
-    .map((repo) => ({
+function readmeExcerpt(markdown) {
+  const withoutCode = markdown.replace(/```[\s\S]*?```/g, '')
+  const lines = withoutCode.split(/\r?\n/)
+  const candidates = []
+  let buffer = []
+
+  const flush = () => {
+    if (!buffer.length) return
+    const paragraph = buffer
+      .join(' ')
+      .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+      .replace(/[*_`~#>|-]/g, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+    if (paragraph.length >= 40) candidates.push(paragraph)
+    buffer = []
+  }
+
+  for (const line of lines) {
+    const trimmed = line.trim()
+    const isNoise =
+      !trimmed ||
+      trimmed.startsWith('#') ||
+      trimmed.startsWith('>') ||
+      trimmed.startsWith('|') ||
+      trimmed.startsWith('!') ||
+      trimmed.startsWith('[![') ||
+      /^[-*+]\s/.test(trimmed) ||
+      /^\d+\.\s/.test(trimmed) ||
+      trimmed.startsWith('<')
+
+    if (isNoise) {
+      flush()
+      continue
+    }
+    buffer.push(trimmed)
+  }
+  flush()
+
+  if (!candidates.length) return null
+  const text = candidates[0]
+  if (text.length <= 220) return text
+  return `${text.slice(0, 217).replace(/\s+\S*$/, '')}…`
+}
+
+async function fetchReadmeExcerpt(repoName) {
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${username}/${repoName}/readme`,
+      { headers: { ...headers, Accept: 'application/vnd.github.raw' } },
+    )
+    if (!response.ok) return null
+    return readmeExcerpt(await response.text())
+  } catch {
+    return null
+  }
+}
+
+async function toRepos(repos) {
+  const active = repos.filter((repo) => !repo.fork && !repo.archived)
+  const mapped = []
+
+  for (const repo of active) {
+    const hasDescription = Boolean(repo.description?.trim())
+    const readme = hasDescription ? null : await fetchReadmeExcerpt(repo.name)
+
+    mapped.push({
       title: repo.name?.toUpperCase() ?? 'UNKNOWN',
       desc: repo.description ?? 'No description.',
-      rank: 'A',
       tags: [repo.language ?? 'UNKNOWN', 'GITHUB'],
-      image: null,
       url: repo.html_url,
-    }))
+      topics: repo.topics ?? [],
+      ...(readme ? { readme } : {}),
+    })
+  }
+
+  return mapped
 }
 
 function contributionLevelToNumber(level) {
@@ -221,3 +313,6 @@ await syncFile(
   fetchContributionCalendar,
   createEmptyContributions(),
 )
+
+const syncedProfile = await readJson('github-profile.json', defaultProfile)
+await downloadFavicon(syncedProfile.profile?.avatar)

@@ -1,101 +1,125 @@
 [
   {
-    "title": "HAMAJJ.GITHUB.IO",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "Vue",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/hamajj.github.io"
-  },
-  {
-    "title": "SORTINGVISUALIZER",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "C",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/sortingvisualizer"
-  },
-  {
-    "title": "KRYPTON",
-    "desc": "Vite-powered LSB steganography engine. Hiding secrets in pixels with pure bitwise logic. 🌌",
-    "rank": "A",
-    "tags": [
-      "Vue",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/krypton"
-  },
-  {
-    "title": "RANALANG",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "Go",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/ranalang"
-  },
-  {
-    "title": "GODASHBOARD",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "Go",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/godashboard"
-  },
-  {
-    "title": "ROBLOX-PIANO-ASSISTER",
-    "desc": "No description.",
-    "rank": "A",
-    "tags": [
-      "UNKNOWN",
-      "GITHUB"
-    ],
-    "image": null,
-    "url": "https://github.com/hamajj/roblox-piano-assister"
-  },
-  {
     "title": "TEDITOR",
     "desc": "Teditor is a command line text editor similar to nano, built with Python 🐍",
-    "rank": "A",
     "tags": [
       "Python",
       "GITHUB"
     ],
-    "image": null,
-    "url": "https://github.com/hamajj/teditor"
+    "url": "https://github.com/hamajj/teditor",
+    "topics": [
+      "text-editor"
+    ]
   },
   {
-    "title": "PORTFOLIO",
-    "desc": "command-line themed portfolio",
-    "rank": "A",
+    "title": "RANALANG",
+    "desc": "No description.",
     "tags": [
-      "JavaScript",
+      "Go",
       "GITHUB"
     ],
-    "image": null,
-    "url": "https://github.com/hamajj/portfolio"
+    "url": "https://github.com/hamajj/ranalang",
+    "topics": [],
+    "readme": "Rana is a general purpose language designed to feel simple and readable like Python at the start, while growing toward stronger low level control over time."
   },
   {
-    "title": "HAMAJJ",
+    "title": "HAMAJJ.GITHUB.IO",
     "desc": "No description.",
-    "rank": "A",
+    "tags": [
+      "Vue",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/hamajj.github.io",
+    "topics": []
+  },
+  {
+    "title": "ICE-LAUNCHER",
+    "desc": "Ice Launcher Update System",
     "tags": [
       "UNKNOWN",
       "GITHUB"
     ],
-    "image": null,
-    "url": "https://github.com/hamajj/hamajj"
+    "url": "https://github.com/hamajj/Ice-Launcher",
+    "topics": []
+  },
+  {
+    "title": "HAMAJJ",
+    "desc": "No description.",
+    "tags": [
+      "UNKNOWN",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/hamajj",
+    "topics": []
+  },
+  {
+    "title": "WRAITH-W1-SERVICE-LINUX",
+    "desc": "Wraith W1 Native Service For Linux ",
+    "tags": [
+      "Python",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/wraith-w1-service-linux",
+    "topics": []
+  },
+  {
+    "title": "HSDWM",
+    "desc": "Hamajj's Super Duper Window Manager",
+    "tags": [
+      "UNKNOWN",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/hsdwm",
+    "topics": []
+  },
+  {
+    "title": "KRYPTON",
+    "desc": "Vite-powered LSB steganography engine. Hiding secrets in pixels with pure bitwise logic. 🌌",
+    "tags": [
+      "Vue",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/krypton",
+    "topics": []
+  },
+  {
+    "title": "SORTINGVISUALIZER",
+    "desc": "No description.",
+    "tags": [
+      "C",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/sortingvisualizer",
+    "topics": []
+  },
+  {
+    "title": "GODASHBOARD",
+    "desc": "No description.",
+    "tags": [
+      "Go",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/godashboard",
+    "topics": []
+  },
+  {
+    "title": "ROBLOX-PIANO-ASSISTER",
+    "desc": "No description.",
+    "tags": [
+      "UNKNOWN",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/roblox-piano-assister",
+    "topics": []
+  },
+  {
+    "title": "PORTFOLIO",
+    "desc": "command-line themed portfolio",
+    "tags": [
+      "JavaScript",
+      "GITHUB"
+    ],
+    "url": "https://github.com/hamajj/portfolio",
+    "topics": []
   }
 ]

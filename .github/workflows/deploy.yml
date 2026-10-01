@@ -39,7 +39,6 @@ jobs:
         run: npm run generate
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NUXT_PUBLIC_ENABLE_NOW_PLAYING: 'false'
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

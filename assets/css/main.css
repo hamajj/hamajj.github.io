@@ -1,290 +1,331 @@
-@import url('https://fonts.cdnfonts.com/css/vcr-osd-mono');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
-
-/* Devicon - Programming language icons */
-@import url('https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css');
+/* ============================================================
+   hamza's little corner of the internet — Y2K / Win98 design system
+   ============================================================ */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --uk-red: #ff1b2d;
-    --uk-blue: #ff69b4;
-    --uk-yellow: #ffff00;
-    --uk-bg: #000000;
-    --uk-text: #ffffff;
-
-    --background: 0 0% 3%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 330 100% 71%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 340 100% 60%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 330 100% 71%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 330 100% 71%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 340 100% 60%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 330 100% 71%;
-  }
-
-  * {
-    @apply border-border;
-  }
-
-  html, body {
-    @apply bg-background text-foreground;
-    font-family: "JetBrains Mono", "VCR OSD Mono", monospace;
+  html,
+  body {
+    height: 100%;
+    font-family: Tahoma, "MS Sans Serif", "Segoe UI", Verdana, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+    background-color: #008080;
+    color: #000000;
     overflow-x: hidden;
+  }
+
+  body {
+    /* dithered teal wallpaper, in case the desktop hasn't mounted */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='2' height='2' fill='%23008080'/%3E%3Crect width='1' height='1' fill='%23018d8d'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23018d8d'/%3E%3C/svg%3E");
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: bold;
+  }
+
+  a {
+    color: #000080;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  a:hover {
+    color: #e02020;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+/* ---------------- Win98 bevels ---------------- */
 
-  html, body {
-    background: var(--uk-bg);
-    color: var(--uk-text);
-    font-family: "JetBrains Mono", "VCR OSD Mono", monospace;
-    overflow-x: hidden;
-  }
+.bevel-out {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
 }
 
-/* Custom Scrollbar */
+.bevel-in {
+  border-style: solid;
+  border-width: 2px;
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow:
+    inset 1px 1px 0 #000000,
+    inset -1px -1px 0 #dfdfdf;
+}
+
+.bevel-out-sm {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
+}
+
+.bevel-in-sm {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow:
+    inset 1px 1px 0 #000000,
+    inset -1px -1px 0 #dfdfdf;
+}
+
+/* group-hover / focus variant that keeps the raised look */
+.bevel-out:focus-within {
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
+}
+
+/* ---------------- Window title bars ---------------- */
+
+.title-active {
+  background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+}
+
+.title-inactive {
+  background: linear-gradient(90deg, #808080 0%, #b5b5b5 100%);
+}
+
+/* ---------------- Buttons ---------------- */
+
+.win98-btn {
+  @apply bg-win-gray font-ui text-black select-none;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
+  padding: 2px 12px;
+  min-height: 24px;
+}
+
+.win98-btn:hover:not(:disabled) {
+  background: #c9c9c9;
+}
+
+.win98-btn:active:not(:disabled),
+.win98-btn[data-pressed='true'] {
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow:
+    inset 1px 1px 0 #000000,
+    inset -1px -1px 0 #dfdfdf;
+}
+
+.win98-btn:disabled {
+  color: #808080;
+  text-shadow: 1px 1px 0 #ffffff;
+}
+
+/* the tiny _ □ ✕ title-bar buttons */
+.title-btn {
+  @apply flex h-[16px] w-[18px] items-center justify-center bg-win-gray text-[9px] leading-none font-bold text-black;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
+}
+
+.title-btn:active {
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow:
+    inset 1px 1px 0 #000000,
+    inset -1px -1px 0 #dfdfdf;
+}
+
+/* ---------------- Shadows / decoration ---------------- */
+
+.hard-shadow {
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.4);
+}
+
+.hard-shadow-sm {
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.dotted-sep {
+  border-top: 2px dotted #808080;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}
+
+.font-pixel,
+.font-pixel * {
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+}
+
+/* ---------------- Menu bar ---------------- */
+
+.menu-bar {
+  @apply flex items-center gap-1 bg-win-gray px-1 py-[2px] text-[12px] text-black;
+  border-bottom: 1px solid #808080;
+  box-shadow: 0 1px 0 #ffffff;
+}
+
+.menu-bar-item {
+  @apply px-2 py-[1px];
+}
+
+.menu-bar-item:hover {
+  background: #000080;
+  color: #ffffff;
+}
+
+/* ---------------- Installer-style progress bar ---------------- */
+
+.progress-track {
+  @apply bevel-in-sm bg-white;
+  height: 20px;
+  padding: 2px;
+}
+
+.progress-stripes {
+  height: 100%;
+  background-image: linear-gradient(
+    45deg,
+    #000080 25%,
+    transparent 25%,
+    transparent 50%,
+    #000080 50%,
+    #000080 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 14px 14px;
+}
+
+.progress-chunks {
+  height: 100%;
+  background-image: repeating-linear-gradient(
+    to right,
+    #000080 0 10px,
+    transparent 10px 13px
+  );
+}
+
+/* ---------------- Scrollbars (Win98) ---------------- */
+
 ::-webkit-scrollbar {
-  width: 8px;
-  background: #0a0a0a;
+  width: 16px;
+  height: 16px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: repeating-conic-gradient(#c0c0c0 0% 25%, #ffffff 0% 50%) 0 0 / 2px 2px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff69b4;
-  border: 2px solid #0a0a0a;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow:
+    inset 1px 1px 0 #dfdfdf,
+    inset -1px -1px 0 #808080;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #e0559e;
+::-webkit-scrollbar-corner {
+  background: #c0c0c0;
 }
 
-/* Terminal Cursor */
-.terminal-cursor::after {
-  content: '█';
-  animation: cursor-blink 1s step-end infinite;
-  color: #ff69b4;
-}
+/* ---------------- Selection & focus ---------------- */
 
-@keyframes cursor-blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
-/* Glitch Text Effect */
-.glitch {
-  position: relative;
-  color: white;
-}
-
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: black;
-}
-
-.glitch::before {
-  left: 2px;
-  text-shadow: -1px 0 #ff1b2d;
-  clip: rect(24px, 550px, 90px, 0);
-  animation: glitch-anim-2 3s infinite linear alternate-reverse;
-}
-
-.glitch::after {
-  left: -2px;
-  text-shadow: -1px 0 #c084fc;
-  clip: rect(85px, 550px, 140px, 0);
-  animation: glitch-anim 2.5s infinite linear alternate-reverse;
-}
-
-@keyframes glitch-anim {
-  0% { clip: rect(14px, 9999px, 127px, 0); }
-  20% { clip: rect(81px, 9999px, 63px, 0); }
-  40% { clip: rect(102px, 9999px, 2px, 0); }
-  60% { clip: rect(27px, 9999px, 98px, 0); }
-  80% { clip: rect(11px, 9999px, 13px, 0); }
-  100% { clip: rect(129px, 9999px, 86px, 0); }
-}
-
-@keyframes glitch-anim-2 {
-  0% { clip: rect(129px, 9999px, 36px, 0); }
-  20% { clip: rect(36px, 9999px, 4px, 0); }
-  40% { clip: rect(104px, 9999px, 11px, 0); }
-  60% { clip: rect(62px, 9999px, 72px, 0); }
-  80% { clip: rect(36px, 9999px, 13px, 0); }
-  100% { clip: rect(13px, 9999px, 107px, 0); }
-}
-
-/* CRT Scanline Effect (Optional) */
-.crt::before {
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(to bottom,
-    rgba(18, 16, 16, 0) 50%,
-    rgba(0, 0, 0, 0.15) 50%
-  );
-  background-size: 100% 4px;
-  z-index: 9998;
-  pointer-events: none;
-}
-
-.crt::after {
-  content: " ";
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(18, 16, 16, 0.05);
-  opacity: 0;
-  z-index: 9998;
-  pointer-events: none;
-  animation: flicker 0.15s infinite;
-}
-
-@keyframes flicker {
-  0% { opacity: 0.02; }
-  5% { opacity: 0.05; }
-  10% { opacity: 0.02; }
-  15% { opacity: 0.06; }
-  20% { opacity: 0.02; }
-  25% { opacity: 0.02; }
-  30% { opacity: 0.02; }
-  35% { opacity: 0.01; }
-  40% { opacity: 0.02; }
-  45% { opacity: 0.02; }
-  50% { opacity: 0.02; }
-  55% { opacity: 0.05; }
-  60% { opacity: 0.02; }
-  65% { opacity: 0.02; }
-  70% { opacity: 0.01; }
-  75% { opacity: 0.02; }
-  80% { opacity: 0.02; }
-  85% { opacity: 0.02; }
-  90% { opacity: 0.02; }
-  95% { opacity: 0.02; }
-  100% { opacity: 0.02; }
-}
-
-/* Chromatic Aberration */
-.chromatic-text {
-  text-shadow: 2px 0 var(--uk-red), -2px 0 var(--uk-blue);
-}
-
-/* HUD Utilities */
-.hud-border {
-  border: 2px solid var(--uk-text);
-  box-shadow: 0 0 10px var(--uk-text);
-}
-
-.hud-bg {
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(4px);
-}
-
-/* Terminal Prompt Styling */
-.terminal-prompt {
-  @apply text-terminal-cyan;
-}
-
-.terminal-prompt::before {
-  content: '$ ';
-  @apply text-terminal-green;
-}
-
-/* Selection */
 ::selection {
-  background: rgba(255, 105, 180, 0.3);
-  color: white;
+  background: #000080;
+  color: #ffffff;
 }
 
-/* Focus styles */
 *:focus-visible {
-  outline: 2px solid #ff69b4;
+  outline: 1px dotted #000000;
+  outline-offset: -3px;
+}
+
+.on-dark:focus-visible {
+  outline: 2px dotted #ffe600;
   outline-offset: 2px;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+/* ---------------- Tooltips with jokes ---------------- */
+
+[data-tip] {
+  position: relative;
 }
 
-/* Card hover effects */
-.card-glow {
-  transition: all 0.3s ease;
-}
-
-.card-glow:hover {
-  box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
-}
-
-/* Gradient text */
-.gradient-text {
-  @apply bg-gradient-to-r from-terminal-cyan to-terminal-green bg-clip-text text-transparent;
-}
-
-/* Noise overlay for depth */
-.noise-overlay::before {
-  content: '';
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+  content: attr(data-tip);
   position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.03;
+  left: 0;
+  top: calc(100% + 6px);
+  z-index: 10000;
+  width: max-content;
+  max-width: 220px;
+  white-space: normal;
+  padding: 3px 6px;
+  background: #ffffe1;
+  color: #000000;
+  border: 1px solid #000000;
+  font-size: 11px;
+  font-weight: normal;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
   pointer-events: none;
-  mix-blend-mode: overlay;
+}
+
+/* ---------------- Marquee (old homepage energy) ---------------- */
+
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee > span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 22s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* ---------------- Reduced motion ---------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .marquee > span {
+    animation: none;
+    padding-left: 0;
+  }
 }
